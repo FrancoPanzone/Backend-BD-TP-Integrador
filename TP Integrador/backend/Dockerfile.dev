@@ -1,0 +1,29 @@
+# backend/Dockerfile.dev
+FROM node:18-alpine
+
+# Instalar dependencias necesarias para desarrollo
+RUN apk add --no-cache git bash
+
+WORKDIR /app
+
+# Variables de entorno
+ENV NODE_ENV=development
+
+# Copiar archivos de dependencias
+COPY package*.json ./
+
+# Instalar dependencias incluyendo devDependencies
+RUN npm install
+
+# Instalar ts-node-dev globalmente (si lo usas)
+RUN npm install -g ts-node-dev
+
+# Copiar el resto del código fuente
+COPY . .
+
+# Exponer puertos
+EXPOSE 3001 9229
+
+# Comando para ejecutar con hot reload dentro de Docker
+CMD ["npm", "run", "devDocker"]
+

@@ -1,0 +1,46 @@
+// tsconfig.json
+{
+  // Visit https://aka.ms/tsconfig to read more about this file
+  "compilerOptions": {
+    // File Layout
+    "rootDir": "./src",
+    "outDir": "./dist",
+
+    // Environment Settings
+    "module": "CommonJS",          // <- importante para Jest
+    "target": "ES2020",
+    "types": ["jest", "node"],
+    "typeRoots": ["./node_modules/@types", "./src/types"],
+
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+
+    // para usar "jsonwebtoken": "^9.0.2",
+    "esModuleInterop": true,
+
+    "allowSyntheticDefaultImports": true,
+
+    // Other Outputs
+    "sourceMap": false,
+    "declaration": false,
+    "declarationMap": false,
+
+    // Stricter Typechecking Options
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Recommended Options
+    "strict": true,
+
+    // === Otras útiles ===
+    "skipLibCheck": true, // ← evita errores con dependencias sin tipos (como swagger-jsdoc)
+    "forceConsistentCasingInFileNames": true
+  },
+  // No tiene sentido compilar archivos de configuración como ESLint, porque no forman parte del código fuente ejecutable.
+  "exclude": [
+    "eslint.config.ts",
+    "node_modules",
+    "dist",
+    "jest.setup.ts"
+  ]
+}

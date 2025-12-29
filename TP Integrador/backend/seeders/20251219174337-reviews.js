@@ -1,0 +1,126 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Seeder} */
+module.exports = {
+  async up(queryInterface) {
+    await queryInterface.bulkInsert(
+      'Reviews',
+      [
+        {
+          user_id: 1,
+          product_id: 1,
+          qualification: 4.5,
+          comment: 'Excelente proteína, se disuelve muy bien y sabe genial',
+          date: new Date('2025-01-01'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 2,
+          product_id: 1,
+          qualification: 4.4,
+          comment: 'Muy buena, aunque un poco cara',
+          date: new Date('2025-01-10'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 3,
+          product_id: 2,
+          qualification: 4.2,
+          comment: 'Ideal para veganos, buen sabor',
+          date: new Date('2025-02-05'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 1,
+          product_id: 3,
+          qualification: 4.8,
+          comment: 'Me ha dado muy buenos resultados en fuerza',
+          date: new Date('2025-02-15'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 2,
+          product_id: 3,
+          qualification: 4.9,
+          comment: 'Excelente creatina, se nota la diferencia en mis entrenamientos',
+          date: new Date('2025-02-20'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 3,
+          product_id: 4,
+          qualification: 4.6,
+          comment: 'Perfecto para recuperación después de entrenar',
+          date: new Date('2025-03-01'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 1,
+          product_id: 5,
+          qualification: 4.4,
+          comment: 'Me da mucha energía antes del entrenamiento',
+          date: new Date('2025-03-05'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 2,
+          product_id: 6,
+          qualification: 4.3,
+          comment: 'Me siento con más energía y vitaminas cubiertas',
+          date: new Date('2025-03-10'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 3,
+          product_id: 7,
+          qualification: 4.1,
+          comment: 'Buena ayuda para acompañar dieta de pérdida de grasa',
+          date: new Date('2025-03-15'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 1,
+          product_id: 8,
+          qualification: 4.5,
+          comment: 'Muy útil para mantenerme hidratado en entrenamientos largos',
+          date: new Date('2025-03-20'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 2,
+          product_id: 9,
+          qualification: 4.6,
+          comment: 'Deliciosa y práctica como snack post-entreno',
+          date: new Date('2025-03-25'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          user_id: 3,
+          product_id: 10,
+          qualification: 4.7,
+          comment: 'Siento mis articulaciones más flexibles y buena digestión',
+          date: new Date('2025-03-30'),
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+  },
+
+  async down(queryInterface) {
+    await queryInterface.bulkDelete('Reviews', null, {});
+  },
+};
+
