@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
+    "test:unit": "jest src/tests/unit",
+    "test:user": "jest src/tests/unit/user.service.test.ts",
     "build": "tsc",
     "dev": "ts-node src/index.ts",
     "start": "node ./dist/index.js",

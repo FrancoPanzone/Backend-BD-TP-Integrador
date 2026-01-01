@@ -230,9 +230,7 @@ describe('UserService - Unit Tests', () => {
   it('should throw error if email already exists', async () => {
     (UserRepository.getByEmail as jest.Mock).mockResolvedValue(sampleUser);
 
-    await expect(UserService.create(sampleInput)).rejects.toThrow(
-      'El email ya está registrado',
-    );
+    await expect(UserService.create(sampleInput)).rejects.toThrow('El email ya está registrado');
   });
 
   // GET
@@ -284,5 +282,3 @@ describe('UserService - Unit Tests', () => {
     expect(result).toBe(false);
   });
 });
-
-
