@@ -98,21 +98,36 @@ class UserService {
   // Crea un nuevo usuario
   // - Si no se especifica rol, se asigna "USER"
   // - Hashea la contraseña
+  // async create(data: UserInput): Promise<User> {
+  //   const existing = await this.getByEmail(data.email);
+  //   if (existing) {
+  //     throw new Error('El email ya está registrado');
+  //   }
+
+  //   const hashedPassword = await bcrypt.hash(data.password, 10);
+
+  //   const newUser: Partial<User> = {
+  //     ...data,
+  //     password: hashedPassword,
+  //     role: data.role ?? UserRole.USER,
+  //   };
+
+  //   return UserRepository.create(newUser);
+  // }
+
+  // Crea un nuevo usuario
+  // - Si no se especifica rol, se asigna "USER"
+  // hashea la contraseña en el repo de user
   async create(data: UserInput): Promise<User> {
     const existing = await this.getByEmail(data.email);
     if (existing) {
       throw new Error('El email ya está registrado');
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-
-    const newUser: Partial<User> = {
+    return UserRepository.create({
       ...data,
-      password: hashedPassword,
       role: data.role ?? UserRole.USER,
-    };
-
-    return UserRepository.create(newUser);
+    });
   }
 
   // Actualiza un usuario

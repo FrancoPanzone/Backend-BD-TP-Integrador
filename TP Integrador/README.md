@@ -10,6 +10,22 @@ Se pasara las .env al mail
 
 Se pasara las .env.test al mail
 
+### 3. Elegir si usar la base de datos de Neon o usar Base de datos local
+
+#### Para usar Neon:
+
+1. Descomentar la parte de DATABASE_URL en el .env de la carpeta raiz
+2. Comentar la parte para el config DB local en el .env de la carpeta raiz
+3. Comentar el servicio db en el .yml
+
+#### Para usar BD PostreSQL Local
+
+1. Comentar la DATABASE_URL en el .env de la carpeta raiz
+2. Descomentar la parte para el config DB local en el .env de la carpeta raiz
+3. Descomentar el servicio db en el .yml
+4. Seguir el punto 5 para preparar la base de datos
+
+
 ### 4. Levantar los Contenedores con Docker
 
 Entrar en la carpeta con el .yml:
@@ -21,6 +37,11 @@ Primero, construir y levantar los contenedores:
 ```bash
 docker-compose build
 docker-compose up -d
+```
+
+Sino usar:
+```bash
+docker-compose up --build -d
 ```
 
 Agregamos las dependencias en el backend:
