@@ -10,12 +10,15 @@
     "declaration": false,
     "declarationMap": false
   },
+  "include": ["src/**/*.ts"],  // <-- incluir solo tu código fuente
   "exclude": [
     "tests",
     "jest.setup.ts",
     "node_modules",
     "dist",
     "**/*.test.ts",
-    "**/__tests__"
+    "**/__tests__",
+    "eslint.config.ts"          // <-- asegúrate de excluir configs
   ]
 }
+
