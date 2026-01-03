@@ -1,0 +1,21 @@
+// tsconfig.build.json
+// para que el deploy de render en produccion ignore los src/test
+// deja tsconfig.json intacto para dev y tests, y el build de Docker queda limpio y seguro.
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "sourceMap": false,
+    "declaration": false,
+    "declarationMap": false
+  },
+  "exclude": [
+    "tests",
+    "jest.setup.ts",
+    "node_modules",
+    "dist",
+    "**/*.test.ts",
+    "**/__tests__"
+  ]
+}
