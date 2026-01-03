@@ -15,7 +15,8 @@ import itemCartRoutes from './routes/itemCart.routes';
 import categoryRoutes from './routes/category.routes';
 import { apiKeyMiddleware } from './middlewares/apiKey.middleware';
 
-import { setupSwagger } from '../src/config/swagger'; // IMPORTANTE para usar swagger
+// import { setupSwagger } from '../src/config/swagger'; // IMPORTANTE para usar swagger
+import { setupSwagger } from './config/swagger';
 //import errorMiddleware from './middlewares/error.middleware.js';
 
 const app = express();
