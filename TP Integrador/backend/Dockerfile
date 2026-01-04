@@ -1,3 +1,4 @@
+# Intento 1: Era con el script "build": "tsc"; se usaba para 
 # # ---- Etapa 1: Builder ----
 # FROM node:18-alpine AS builder
 
@@ -30,6 +31,8 @@
 
 # CMD ["npm", "start"]
 
+
+# Intento 2: primera modificacion para el deploy
 # # ---- Etapa 1: Builder ----
 # FROM node:18-alpine AS builder
 
@@ -63,6 +66,7 @@
 
 # CMD ["npm", "start"]
 
+# Intento 3 para el deploy
 # ---- Etapa 1: Builder ----
 FROM node:18-alpine AS builder
 

@@ -167,17 +167,39 @@ describe('ReviewService - Unit Tests', () => {
   });
 
   // DELETE
+  // it('should delete a review and update product rating', async () => {
+  //   (ReviewRepository.getById as jest.Mock).mockResolvedValue(sampleReview);
+  //   (ReviewRepository.delete as jest.Mock).mockResolvedValue(true);
+  //   (ReviewRepository.getByProductId as jest.Mock).mockResolvedValue([]);
+  //   (ProductRepository.update as jest.Mock).mockResolvedValue({ ...sampleProduct, rating: 0 });
+
+  //   const result = await ReviewService.delete(sampleReview.review_id);
+
+  //   expect(ReviewRepository.getById).toHaveBeenCalledWith(sampleReview.review_id);
+  //   expect(ReviewRepository.delete).toHaveBeenCalledWith(sampleReview.review_id);
+  //   expect(ProductRepository.update).toHaveBeenCalledWith(sampleReview.product_id, expect.objectContaining({ rating: 0 }));
+  //   expect(result).toBe(true);
+  // });
+
   it('should delete a review and update product rating', async () => {
     (ReviewRepository.getById as jest.Mock).mockResolvedValue(sampleReview);
     (ReviewRepository.delete as jest.Mock).mockResolvedValue(true);
     (ReviewRepository.getByProductId as jest.Mock).mockResolvedValue([]);
-    (ProductRepository.update as jest.Mock).mockResolvedValue({ ...sampleProduct, rating: 0 });
+
+    (ProductRepository.getById as jest.Mock).mockResolvedValue(sampleProduct);
+    (ProductRepository.update as jest.Mock).mockResolvedValue({
+      ...sampleProduct,
+      rating: 0,
+    });
 
     const result = await ReviewService.delete(sampleReview.review_id);
 
     expect(ReviewRepository.getById).toHaveBeenCalledWith(sampleReview.review_id);
     expect(ReviewRepository.delete).toHaveBeenCalledWith(sampleReview.review_id);
-    expect(ProductRepository.update).toHaveBeenCalledWith(sampleReview.product_id, expect.objectContaining({ rating: 0 }));
+    expect(ProductRepository.update).toHaveBeenCalledWith(
+      sampleReview.product_id,
+      expect.objectContaining({ rating: 0 }),
+    );
     expect(result).toBe(true);
   });
 
