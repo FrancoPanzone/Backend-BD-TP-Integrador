@@ -17,13 +17,15 @@ Se pasara las .env.test al mail
 1. Descomentar la parte de DATABASE_URL en el .env de la carpeta raiz
 2. Comentar la parte para el config DB local en el .env de la carpeta raiz
 3. Comentar el servicio db en el .yml
+4. Comentar el depends_on del servicio backend en el .yml
 
 #### Para usar BD PostreSQL Local
 
 1. Comentar la DATABASE_URL en el .env de la carpeta raiz
 2. Descomentar la parte para el config DB local en el .env de la carpeta raiz
 3. Descomentar el servicio db en el .yml
-4. Seguir el punto 5 para preparar la base de datos
+4. Descomentar el depends_on del servicio backend en el .yml
+5. Seguir el punto 5 para preparar la base de datos
 
 
 ### 4. Levantar los Contenedores con Docker

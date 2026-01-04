@@ -203,28 +203,50 @@ describe('UserService - Unit Tests', () => {
   });
 
   // CREATE
-  it('should create a new user with hashed password', async () => {
+  // it('should create a new user with hashed password', async () => {
+  //   (UserRepository.getByEmail as jest.Mock).mockResolvedValue(null);
+  //   (UserRepository.create as jest.Mock).mockImplementation(async (data) => ({
+  //     ...data,
+  //     user_id: 1,
+  //   }));
+
+  //   const created = await UserService.create(sampleInput);
+
+  //   expect(UserRepository.getByEmail).toHaveBeenCalledWith('test@example.com');
+  //   expect(UserRepository.create).toHaveBeenCalledWith(
+  //     expect.objectContaining({
+  //       name: 'Test User',
+  //       email: 'test@example.com',
+  //       password: expect.any(String),
+  //       address: 'Test Street 1',
+  //       role: UserRole.USER,
+  //     }),
+  //   );
+
+  //   const isMatch = await bcrypt.compare('Password123', created.password);
+  //   expect(isMatch).toBe(true);
+  // });
+
+  it('should create a new user and delegate password hashing to repository', async () => {
     (UserRepository.getByEmail as jest.Mock).mockResolvedValue(null);
-    (UserRepository.create as jest.Mock).mockImplementation(async (data) => ({
-      ...data,
-      user_id: 1,
-    }));
+    (UserRepository.create as jest.Mock).mockResolvedValue({
+      ...sampleUser,
+      password: 'hashedPassword',
+    });
 
     const created = await UserService.create(sampleInput);
 
     expect(UserRepository.getByEmail).toHaveBeenCalledWith('test@example.com');
-    expect(UserRepository.create).toHaveBeenCalledWith(
-      expect.objectContaining({
-        name: 'Test User',
-        email: 'test@example.com',
-        password: expect.any(String),
-        address: 'Test Street 1',
-        role: UserRole.USER,
-      }),
-    );
 
-    const isMatch = await bcrypt.compare('Password123', created.password);
-    expect(isMatch).toBe(true);
+    expect(UserRepository.create).toHaveBeenCalledWith({
+      name: 'Test User',
+      email: 'test@example.com',
+      password: 'Password123', // 👉 contraseña en claro
+      address: 'Test Street 1',
+      role: UserRole.USER,
+    });
+
+    expect(created.password).toBe('hashedPassword');
   });
 
   it('should throw error if email already exists', async () => {
