@@ -61,15 +61,31 @@ export class orderDetailController {
     }
   }
 
+  // async delete(req: Request, res: Response) {
+  //   const id = Number(req.params.id);
+  //   if (isNaN(id)) {
+  //     return res.status(400).json({ error: 'ID inválido' });
+  //   }
+  //   try {
+  //     await orderDetailService.delete(id);
+  //     const orderdetail = await orderDetailService.getById(id);
+  //     if (!orderdetail) {
+  //       return res.status(404).json({ error: 'OrderDetail no encontrado' });
+  //     }
+  //     res.status(200).json({ message: 'OrderDetail eliminado correctamente' });
+  //   } catch (err: any) {
+  //     res.status(500).json({ error: err.message || 'Error interno del servidor' });
+  //   }
+  // }
+
   async delete(req: Request, res: Response) {
     const id = Number(req.params.id);
     if (isNaN(id)) {
       return res.status(400).json({ error: 'ID inválido' });
     }
     try {
-      await orderDetailService.delete(id);
-      const orderdetail = await orderDetailService.getById(id);
-      if (!orderdetail) {
+      const deleted = await orderDetailService.delete(id);
+      if (!deleted) {
         return res.status(404).json({ error: 'OrderDetail no encontrado' });
       }
       res.status(200).json({ message: 'OrderDetail eliminado correctamente' });
