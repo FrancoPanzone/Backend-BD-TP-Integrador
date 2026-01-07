@@ -47,9 +47,19 @@
 
 // backend/src/config/env.config.ts
 import { z } from 'zod';
-import dotenv from 'dotenv';
+// TODO: quitar el dotenv de aca y usarlo solo en el config.js
+//import dotenv from 'dotenv';
 
-dotenv.config();
+//dotenv.config();
+
+// Si NODE_ENV no está definido, se toma development → intenta cargar .env.development.
+// Como no existe .env.development pero sí hay un .env en la raíz, dotenv por defecto busca .env si el path que pasaste no existe.
+//Por eso tus variables se resolvían aunque dotenv.config(); estuviera comentado.
+
+// Carga el .env según NODE_ENV (para los test de integracion)
+//dotenv.config({ path: `.env.${process.env.NODE_ENV || 'development'}` });
+
+// para ejecutar un test hay que usar NODE_ENV=test npx jest dentro de la carpeta backend
 
 const envSchema = z.object({
   DATABASE_URL: z.string().optional(),

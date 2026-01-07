@@ -1,28 +1,43 @@
-version: '3.8'
+version: "3.8"
 
 services:
-
   # para usar Neon comentamos el contenedor local
-  # db:
-  #   image: postgres:16-alpine
-  #   container_name: suplementos_db
-  #   restart: unless-stopped
-  #   environment:
-  #     POSTGRES_DB: ecommerce_suplementos
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: tu_contraseña
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #     - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
-  #   networks:
-  #     - suplementos_network
-  #   healthcheck:
-  #     test: ["CMD-SHELL", "pg_isready -U postgres -d ecommerce_suplementos"]
-  #     interval: 30s
-  #     timeout: 10s
-  #     retries: 3
+  db:
+    image: postgres:16-alpine
+    container_name: suplementos_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ecommerce_suplementos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: tu_contraseña
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - suplementos_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ecommerce_suplementos"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  db_test:
+    image: postgres:16-alpine
+    container_name: suplementos_db_test
+    environment:
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+      POSTGRES_DB: testdb
+    ports:
+      - "5433:5432"
+    networks:
+      - suplementos_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U testuser"]
+      interval: 5s
+      retries: 5
 
   backend:
     build:
@@ -38,9 +53,27 @@ services:
       - ./backend:/app
       - backend_node_modules:/app/node_modules
     # para probar Neon comentamos depends_on
-    # depends_on:
-    #   db:
-    #     condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - suplementos_network
+
+  backend_test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.dev
+    container_name: suplementos_backend_test
+    env_file:
+      - ./backend/.env.test
+    environment:
+      NODE_ENV: test
+    volumes:
+      - ./backend:/app
+      - backend_node_modules:/app/node_modules
+    depends_on:
+      db_test:
+        condition: service_healthy
     networks:
       - suplementos_network
 

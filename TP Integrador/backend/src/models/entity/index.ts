@@ -1,6 +1,10 @@
 // src/models/entity/index.ts
 
-import { sequelize } from '../../config/database.config';
+//import { sequelize } from '../../config/database.config';
+
+// Ahora todas las asociaciones estarán registradas en la misma instancia que tu app y tus tests, y los CREATE/GET funcionarán correctamente.
+import { DatabaseConnection } from '../../patterns/singleton/database.connection';
+const sequelize = DatabaseConnection.getInstance(); // ✅ usa el singleton
 
 import { Category } from './category.model';
 import { Product } from './product.model';

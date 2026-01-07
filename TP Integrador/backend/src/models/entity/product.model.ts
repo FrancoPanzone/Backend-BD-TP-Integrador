@@ -1,7 +1,10 @@
 // src/models/entity/product.model.ts
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../config/database.config';
+//import { sequelize } from '../../config/database.config';
 import { Category } from './category.model';
+
+import { DatabaseConnection } from '../../patterns/singleton/database.connection';
+const sequelize = DatabaseConnection.getInstance();
 
 interface ProductAttributes {
   product_id: number;
@@ -80,7 +83,7 @@ Product.init(
     },
   },
   {
-    sequelize,
+    sequelize, // ✅ usa el singleton
     tableName: 'Products',
     timestamps: true,
   }

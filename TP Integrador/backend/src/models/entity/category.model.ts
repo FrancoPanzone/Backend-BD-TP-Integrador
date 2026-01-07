@@ -1,6 +1,9 @@
 // src/models/entity/category.model.ts
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../config/database.config'
+//import { sequelize } from '../../config/database.config'
+
+import { DatabaseConnection } from '../../patterns/singleton/database.connection';
+const sequelize = DatabaseConnection.getInstance();
 
 interface CategoryAttributes {
   category_id: number;
@@ -38,7 +41,7 @@ Category.init(
     },
   },
   {
-    sequelize,
+    sequelize, // ✅ usa el singleton
     tableName: 'Categories',
     timestamps: true,
   }

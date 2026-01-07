@@ -41,20 +41,47 @@ app.listen(PORT, () => {
 //   }
 // })();
 
+// src/index.ts
 //TODO: singleton con neon
+// import 'dotenv/config';
+// import app from './app';
+// import { DatabaseConnection } from './patterns/singleton/database.connection';
+// import './models/entity';
+
+// const PORT = process.env.PORT || 3001;
+
+// (async () => {
+//   try {
+//     console.log('🧩 Conectando a la base de datos...');
+//     await DatabaseConnection.connect();
+
+//     const sequelize = DatabaseConnection.getInstance();
+
+//     app.listen(PORT, () => {
+//       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+//     });
+//   } catch (error) {
+//     console.error('❌ Error al iniciar el servidor:', error);
+//     process.exit(1);
+//   }
+// })();
+
+// src/index.ts
 import 'dotenv/config';
 import app from './app';
 import { DatabaseConnection } from './patterns/singleton/database.connection';
-import './models/entity';
+import './models/entity'; // importa los modelos para registrar asociaciones
 
 const PORT = process.env.PORT || 3001;
 
 (async () => {
   try {
     console.log('🧩 Conectando a la base de datos...');
-    await DatabaseConnection.connect();
+    await DatabaseConnection.connect(); // 🔑 conecta la DB primero
 
-    const sequelize = DatabaseConnection.getInstance();
+    // Opcional: sincronizar tablas en dev
+    // const sequelize = DatabaseConnection.getInstance();
+    // await sequelize.sync({ alter: true }); // ⚠️ solo en dev
 
     app.listen(PORT, () => {
       console.log(`🚀 Servidor corriendo en puerto ${PORT}`);

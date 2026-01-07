@@ -88,95 +88,145 @@
 // }
 
 // src/patterns/singleton/database.connection.ts
+// import { Sequelize } from 'sequelize';
+// import env from '../../config/env.config';
+
+// export class DatabaseConnection {
+//   private static instance: Sequelize;
+
+//   private constructor() { }
+
+//   // public static getInstance(): Sequelize {
+//   //   if (!DatabaseConnection.instance) {
+//   //     // Validación de entorno
+//   //     if (!env.DATABASE_URL && (!env.DB_NAME || !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST)) {
+//   //       throw new Error(
+//   //         '❌ No hay configuración de base de datos válida. ' +
+//   //         'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.'
+//   //       );
+//   //     }
+
+//   //     if (env.DATABASE_URL) {
+//   //       // Neon / Render
+//   //       DatabaseConnection.instance = new Sequelize(env.DATABASE_URL, {
+//   //         dialect: 'postgres',
+//   //         logging: false,
+//   //         dialectOptions: {
+//   //           ssl: {
+//   //             require: true,
+//   //             rejectUnauthorized: false, // necesario para Neon
+//   //           },
+//   //         },
+//   //       });
+//   //       console.log('🟢 [Singleton] Conectando a la base de datos Neon/Render.');
+//   //     } else {
+//   //       // Local / Docker
+//   //       DatabaseConnection.instance = new Sequelize(
+//   //         env.DB_NAME!,
+//   //         env.DB_USER!,
+//   //         env.DB_PASSWORD!,
+//   //         {
+//   //           host: env.DB_HOST!,
+//   //           port: Number(env.DB_PORT),
+//   //           dialect: 'postgres',
+//   //           logging: false,
+//   //         }
+//   //       );
+//   //       console.log('🟢 [Singleton] Conectando a la base de datos local Docker.');
+//   //     }
+//   //   }
+
+//   //   return DatabaseConnection.instance;
+//   // }
+
+//   // public static async connect(): Promise<void> {
+//   //   try {
+//   //     await DatabaseConnection.getInstance().authenticate();
+//   //     console.log('✅ Conexión a PostgreSQL establecida correctamente.');
+//   //   } catch (error) {
+//   //     console.error('❌ Error al conectar con la base de datos:', error);
+//   //     throw error;
+//   //   }
+//   // }
+
+//   public static getInstance(): Sequelize {
+//     if (!DatabaseConnection.instance) {
+//       // Validación de entorno
+//       if (!env.DATABASE_URL && (!env.DB_NAME || !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST)) {
+//         throw new Error(
+//           '❌ No hay configuración de base de datos válida. ' +
+//           'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.'
+//         );
+//       }
+
+//       if (env.DATABASE_URL) {
+//         // Neon / Render
+//         console.log('🔹 Intentando conectar a Neon con URL:', env.DATABASE_URL);
+//         DatabaseConnection.instance = new Sequelize(env.DATABASE_URL, {
+//           dialect: 'postgres',
+//           logging: console.log, // muestra todas las queries y la conexión
+//           dialectOptions: {
+//             ssl: { require: true, rejectUnauthorized: false },
+//           },
+//         });
+//       } else {
+//         // Local / Docker
+//         console.log('🔹 Intentando conectar a local con:', {
+//           host: env.DB_HOST,
+//           user: env.DB_USER,
+//           db: env.DB_NAME,
+//           port: env.DB_PORT,
+//         });
+//         DatabaseConnection.instance = new Sequelize(
+//           env.DB_NAME!,
+//           env.DB_USER!,
+//           env.DB_PASSWORD!,
+//           {
+//             host: env.DB_HOST!,
+//             port: Number(env.DB_PORT),
+//             dialect: 'postgres',
+//             logging: console.log,
+//           }
+//         );
+//       }
+//     }
+
+//     return DatabaseConnection.instance;
+//   }
+
+//   public static async connect(): Promise<void> {
+//     try {
+//       const sequelize = DatabaseConnection.getInstance();
+//       await sequelize.authenticate();
+//       console.log('✅ Conexión a PostgreSQL establecida correctamente.');
+//     } catch (error) {
+//       console.error('❌ Error al conectar con la base de datos:', error);
+//       throw error; // así puedes ver el stack completo
+//     }
+//   }
+
+// }
+
+// src/patterns/singleton/database.connection.ts
 import { Sequelize } from 'sequelize';
 import env from '../../config/env.config';
 
 export class DatabaseConnection {
   private static instance: Sequelize;
 
-  private constructor() { }
-
-  // public static getInstance(): Sequelize {
-  //   if (!DatabaseConnection.instance) {
-  //     // Validación de entorno
-  //     if (!env.DATABASE_URL && (!env.DB_NAME || !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST)) {
-  //       throw new Error(
-  //         '❌ No hay configuración de base de datos válida. ' +
-  //         'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.'
-  //       );
-  //     }
-
-  //     if (env.DATABASE_URL) {
-  //       // Neon / Render
-  //       DatabaseConnection.instance = new Sequelize(env.DATABASE_URL, {
-  //         dialect: 'postgres',
-  //         logging: false,
-  //         dialectOptions: {
-  //           ssl: {
-  //             require: true,
-  //             rejectUnauthorized: false, // necesario para Neon
-  //           },
-  //         },
-  //       });
-  //       console.log('🟢 [Singleton] Conectando a la base de datos Neon/Render.');
-  //     } else {
-  //       // Local / Docker
-  //       DatabaseConnection.instance = new Sequelize(
-  //         env.DB_NAME!,
-  //         env.DB_USER!,
-  //         env.DB_PASSWORD!,
-  //         {
-  //           host: env.DB_HOST!,
-  //           port: Number(env.DB_PORT),
-  //           dialect: 'postgres',
-  //           logging: false,
-  //         }
-  //       );
-  //       console.log('🟢 [Singleton] Conectando a la base de datos local Docker.');
-  //     }
-  //   }
-
-  //   return DatabaseConnection.instance;
-  // }
-
-  // public static async connect(): Promise<void> {
-  //   try {
-  //     await DatabaseConnection.getInstance().authenticate();
-  //     console.log('✅ Conexión a PostgreSQL establecida correctamente.');
-  //   } catch (error) {
-  //     console.error('❌ Error al conectar con la base de datos:', error);
-  //     throw error;
-  //   }
-  // }
+  private constructor() {}
 
   public static getInstance(): Sequelize {
     if (!DatabaseConnection.instance) {
-      // Validación de entorno
-      if (!env.DATABASE_URL && (!env.DB_NAME || !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST)) {
-        throw new Error(
-          '❌ No hay configuración de base de datos válida. ' +
-          'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.'
-        );
-      }
-
       if (env.DATABASE_URL) {
-        // Neon / Render
-        console.log('🔹 Intentando conectar a Neon con URL:', env.DATABASE_URL);
+        // Neon / Producción
         DatabaseConnection.instance = new Sequelize(env.DATABASE_URL, {
           dialect: 'postgres',
-          logging: console.log, // muestra todas las queries y la conexión
-          dialectOptions: {
-            ssl: { require: true, rejectUnauthorized: false },
-          },
+          logging: false,
+          dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
         });
       } else {
-        // Local / Docker
-        console.log('🔹 Intentando conectar a local con:', {
-          host: env.DB_HOST,
-          user: env.DB_USER,
-          db: env.DB_NAME,
-          port: env.DB_PORT,
-        });
+        // Local / Tests
         DatabaseConnection.instance = new Sequelize(
           env.DB_NAME!,
           env.DB_USER!,
@@ -185,12 +235,11 @@ export class DatabaseConnection {
             host: env.DB_HOST!,
             port: Number(env.DB_PORT),
             dialect: 'postgres',
-            logging: console.log,
+            logging: false,
           }
         );
       }
     }
-
     return DatabaseConnection.instance;
   }
 
@@ -198,11 +247,23 @@ export class DatabaseConnection {
     try {
       const sequelize = DatabaseConnection.getInstance();
       await sequelize.authenticate();
-      console.log('✅ Conexión a PostgreSQL establecida correctamente.');
+      console.log(`✅ Conexión a PostgreSQL (${env.DB_NAME}) establecida correctamente.`);
     } catch (error) {
       console.error('❌ Error al conectar con la base de datos:', error);
-      throw error; // así puedes ver el stack completo
+      throw error;
     }
   }
 
+  public static async close(): Promise<void> {
+    if (DatabaseConnection.instance) {
+      await DatabaseConnection.instance.close();
+      DatabaseConnection.instance = undefined!;
+    }
+  }
+
+  public static async clear(): Promise<void> {
+    const sequelize = DatabaseConnection.getInstance();
+    await sequelize.drop(); // borra todas las tablas
+    await sequelize.sync(); // vuelve a crear
+  }
 }
