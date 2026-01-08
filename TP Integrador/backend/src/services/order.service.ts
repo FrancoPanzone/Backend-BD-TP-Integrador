@@ -452,6 +452,84 @@
 // export default new OrderService();
 
 // src/services/order.service.ts
+// import { Order, OrderStatus } from '../models/entity/order.model';
+// import { OrderInput } from '../dtos/order.dto';
+// import OrderRepository from '../repositories/order.repository';
+
+// import UserService from './user.service';
+// import CartService from './cart.service';
+// import ItemCartService from './itemCart.service';
+
+// class OrderService {
+//   private orderRepo = OrderRepository;
+
+//   private async validateUser(user_id: number) {
+//     const user = await UserService.getById(user_id);
+//     if (!user) throw new Error('Usuario no existe');
+//   }
+
+//   async getAll(): Promise<Order[]> {
+//     return this.orderRepo.getAll();
+//   }
+
+//   async getById(id: number): Promise<Order> {
+//     const order = await this.orderRepo.getById(id);
+//     if (!order) throw new Error('Orden no encontrada');
+//     return order;
+//   }
+
+//   async getByUserId(user_id: number): Promise<Order[]> {
+//     return this.orderRepo.getByUserId(user_id);
+//   }
+
+//   async create(data: OrderInput): Promise<Order> {
+//     await this.validateUser(data.user_id);
+//     return this.orderRepo.create(data);
+//   }
+
+//   async checkout(user_id: number): Promise<Order> {
+//     await this.validateUser(user_id);
+
+//     const cart = await CartService.getCartByUserId(user_id);
+//     if (!cart) throw new Error('Carrito no encontrado');
+
+//     const cartItems = await ItemCartService.getByCartId(cart.cart_id);
+//     if (cartItems.length === 0) {
+//       throw new Error('El carrito está vacío');
+//     }
+
+//     const order = await this.orderRepo.create({
+//       user_id,
+//       items: cartItems.map((i) => ({
+//         productId: i.product_id,
+//         quantity: i.quantity,
+//       })),
+//     });
+
+//     await ItemCartService.clearByCartId(cart.cart_id);
+//     return order;
+//   }
+
+//   async updateStatus(id: number, status: OrderStatus): Promise<Order> {
+//     const order = await this.orderRepo.updateStatus(id, status);
+//     if (!order) throw new Error('Orden no encontrada');
+
+//     if (order.status === 'cancel') {
+//       throw new Error('No se puede modificar una orden cancelada');
+//     }
+
+//     return order;
+//   }
+
+//   async delete(id: number): Promise<void> {
+//     const deleted = await this.orderRepo.delete(id);
+//     if (!deleted) throw new Error('Orden no encontrada');
+//   }
+// }
+
+// export default new OrderService();
+
+// src/services/order.service.ts
 import { Order, OrderStatus } from '../models/entity/order.model';
 import { OrderInput } from '../dtos/order.dto';
 import OrderRepository from '../repositories/order.repository';
@@ -459,59 +537,63 @@ import OrderRepository from '../repositories/order.repository';
 import UserService from './user.service';
 import CartService from './cart.service';
 import ItemCartService from './itemCart.service';
+import { Transaction } from 'sequelize';
 
 class OrderService {
   private orderRepo = OrderRepository;
 
-  private async validateUser(user_id: number) {
-    const user = await UserService.getById(user_id);
+  private async validateUser(user_id: number, transaction?: Transaction) {
+    const user = await UserService.getById(user_id, transaction);
     if (!user) throw new Error('Usuario no existe');
   }
 
-  async getAll(): Promise<Order[]> {
-    return this.orderRepo.getAll();
+  async getAll(transaction?: Transaction): Promise<Order[]> {
+    return this.orderRepo.getAll(transaction ?? null);
   }
 
-  async getById(id: number): Promise<Order> {
-    const order = await this.orderRepo.getById(id);
+  async getById(id: number, transaction?: Transaction): Promise<Order> {
+    const order = await this.orderRepo.getById(id, transaction ?? null);
     if (!order) throw new Error('Orden no encontrada');
     return order;
   }
 
-  async getByUserId(user_id: number): Promise<Order[]> {
-    return this.orderRepo.getByUserId(user_id);
+  async getByUserId(user_id: number, transaction?: Transaction): Promise<Order[]> {
+    return this.orderRepo.getByUserId(user_id, transaction ?? null);
   }
 
-  async create(data: OrderInput): Promise<Order> {
-    await this.validateUser(data.user_id);
-    return this.orderRepo.create(data);
+  async create(data: OrderInput, transaction?: Transaction): Promise<Order> {
+    await this.validateUser(data.user_id, transaction);
+    return this.orderRepo.create(data, transaction ?? null);
   }
 
-  async checkout(user_id: number): Promise<Order> {
-    await this.validateUser(user_id);
+  async checkout(user_id: number, transaction?: Transaction): Promise<Order> {
+    await this.validateUser(user_id, transaction);
 
-    const cart = await CartService.getCartByUserId(user_id);
+    const cart = await CartService.getCartByUserId(user_id, transaction);
     if (!cart) throw new Error('Carrito no encontrado');
 
-    const cartItems = await ItemCartService.getByCartId(cart.cart_id);
+    const cartItems = await ItemCartService.getByCartId(cart.cart_id, transaction);
     if (cartItems.length === 0) {
       throw new Error('El carrito está vacío');
     }
 
-    const order = await this.orderRepo.create({
-      user_id,
-      items: cartItems.map((i) => ({
-        productId: i.product_id,
-        quantity: i.quantity,
-      })),
-    });
+    const order = await this.orderRepo.create(
+      {
+        user_id,
+        items: cartItems.map((i) => ({
+          productId: i.product_id,
+          quantity: i.quantity,
+        })),
+      },
+      transaction ?? null
+    );
 
-    await ItemCartService.clearByCartId(cart.cart_id);
+    await ItemCartService.clearByCartId(cart.cart_id, transaction);
     return order;
   }
 
-  async updateStatus(id: number, status: OrderStatus): Promise<Order> {
-    const order = await this.orderRepo.updateStatus(id, status);
+  async updateStatus(id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
+    const order = await this.orderRepo.updateStatus(id, status, transaction ?? null);
     if (!order) throw new Error('Orden no encontrada');
 
     if (order.status === 'cancel') {
@@ -521,8 +603,8 @@ class OrderService {
     return order;
   }
 
-  async delete(id: number): Promise<void> {
-    const deleted = await this.orderRepo.delete(id);
+  async delete(id: number, transaction?: Transaction): Promise<void> {
+    const deleted = await this.orderRepo.delete(id, transaction ?? null);
     if (!deleted) throw new Error('Orden no encontrada');
   }
 }

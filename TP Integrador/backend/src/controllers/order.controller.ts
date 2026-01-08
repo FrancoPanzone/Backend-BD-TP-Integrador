@@ -15,15 +15,30 @@ class OrderController {
   }
 
   // GET /api/orders/:id
+  // async getById(req: Request, res: Response) {
+  //   const id = Number(req.params.id);
+  //   if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
+
+  //   try {
+  //     const order = await OrderService.getById(id);
+  //     if (!order) return res.status(404).json({ error: 'Orden no encontrada' });
+  //     res.json(order);
+  //   } catch (err: any) {
+  //     res.status(500).json({ error: err.message || 'Error interno del servidor' });
+  //   }
+  // }
+
   async getById(req: Request, res: Response) {
     const id = Number(req.params.id);
     if (isNaN(id)) return res.status(400).json({ error: 'ID inválido' });
 
     try {
       const order = await OrderService.getById(id);
-      if (!order) return res.status(404).json({ error: 'Orden no encontrada' });
       res.json(order);
     } catch (err: any) {
+      if (err.message === 'Orden no encontrada') {
+        return res.status(404).json({ error: err.message });
+      }
       res.status(500).json({ error: err.message || 'Error interno del servidor' });
     }
   }
@@ -90,12 +105,21 @@ class OrderController {
 
     const { status } = req.body as { status: OrderStatus };
 
+    // try {
+    //   const updated = await OrderService.updateStatus(id, status);
+    //   if (!updated) return res.status(404).json({ error: 'Orden no encontrada' });
+    //   res.json(updated);
+    // } catch (err: any) {
+    //   res.status(500).json({ error: err.message || 'Error actualizando estado de la orden' });
+    // }
     try {
       const updated = await OrderService.updateStatus(id, status);
-      if (!updated) return res.status(404).json({ error: 'Orden no encontrada' });
       res.json(updated);
     } catch (err: any) {
-      res.status(500).json({ error: err.message || 'Error actualizando estado de la orden' });
+      if (err.message === 'Orden no encontrada') {
+        return res.status(404).json({ error: err.message });
+      }
+      res.status(400).json({ error: err.message });
     }
   }
 

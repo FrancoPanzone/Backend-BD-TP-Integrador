@@ -1,118 +1,194 @@
 // src/tests/integration/auth.integration.test.ts
-import request from 'supertest';
-import app from '../../app';
+// import request from 'supertest';
+// import app from '../../app';
+// import UserService from '../../services/user.service';
+// import bcrypt from 'bcrypt';
+// import { User, UserRole } from '../../models/entity/user.entity';
+
+// describe('Integración - AUTH', () => {
+//   const API_KEY = process.env.API_KEY || 'test_api_key';
+
+//   let testUser: User;
+
+//   beforeAll(async () => {
+//     const hashedPassword = await bcrypt.hash('password123', 10);
+
+//     // Crear instancia real de User
+//     testUser = new User(
+//       1,
+//       'TestUser',
+//       'testuser@example.com',
+//       hashedPassword,
+//       'Calle Falsa 123',
+//       UserRole.USER,
+//     );
+
+//     // Mockear getByName para login
+//     jest.spyOn(UserService, 'getByName').mockImplementation(async (name: string) => {
+//       return name === testUser.name ? testUser : undefined;
+//     });
+
+//     // Mockear getByEmail para forgot-password
+//     jest.spyOn(UserService, 'getByEmail').mockImplementation(async (email: string) => {
+//       return email === testUser.email ? testUser : undefined;
+//     });
+//   });
+
+//   afterAll(() => {
+//     jest.restoreAllMocks();
+//   });
+
+//   // ------------------- LOGIN -------------------
+//   describe('POST /api/auth/login', () => {
+//     it('debería iniciar sesión con credenciales válidas y devolver un token', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/login')
+//         .set('x-api-key', API_KEY)
+//         .send({ name: 'TestUser', password: 'password123' });
+
+//       expect(res.status).toBe(200);
+//       expect(res.body.message).toBe('Login exitoso');
+//       expect(res.body.token).toBeDefined();
+//       expect(res.body.user.name).toBe(testUser.name);
+//     });
+
+//     it('debería retornar 401 si la contraseña es incorrecta', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/login')
+//         .set('x-api-key', API_KEY)
+//         .send({ name: 'TestUser', password: 'wrongpass' });
+
+//       expect(res.status).toBe(401);
+//       expect(res.body.message).toBe('Credenciales inválidas');
+//     });
+
+//     it('debería retornar 401 si el usuario no existe', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/login')
+//         .set('x-api-key', API_KEY)
+//         .send({ name: 'NoExiste', password: 'password123' });
+
+//       expect(res.status).toBe(401);
+//       expect(res.body.message).toBe('Credenciales inválidas');
+//     });
+
+//     it('debería retornar 422 si faltan campos o no cumplen el schema', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/login')
+//         .set('x-api-key', API_KEY)
+//         .send({ name: 'Te' }); // contraseña faltante
+
+//       expect(res.status).toBe(422);
+//       expect(res.body.errors).toBeDefined();
+//     });
+//   });
+
+//   // ------------------- FORGOT PASSWORD -------------------
+//   describe('POST /api/auth/forgot-password', () => {
+//     it('debería enviar un "correo" si el email existe', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/forgot-password')
+//         .set('x-api-key', API_KEY)
+//         .send({ email: 'testuser@example.com' });
+
+//       expect(res.status).toBe(200);
+//       expect(res.body.message).toBe('Se enviaron instrucciones a su correo electrónico');
+//     });
+
+//     it('debería retornar 404 si el email no pertenece a ningún usuario', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/forgot-password')
+//         .set('x-api-key', API_KEY)
+//         .send({ email: 'noexiste@example.com' });
+
+//       expect(res.status).toBe(404);
+//       expect(res.body.message).toBe('No existe un usuario con ese email');
+//     });
+
+//     it('debería retornar 422 si el email es inválido', async () => {
+//       const res = await request(app)
+//         .post('/api/auth/forgot-password')
+//         .set('x-api-key', API_KEY)
+//         .send({ email: 'correo-invalido' });
+
+//       expect(res.status).toBe(422);
+//       expect(res.body.errors).toBeDefined();
+//     });
+//   });
+// });
+
+// src/tests/integration/auth.integration.test.ts
+import AuthService from '../../services/auth.service';
 import UserService from '../../services/user.service';
+import { sequelize } from '../../models/entity';
+import { UserInput } from '../../dtos/user.dto';
+import { Transaction } from 'sequelize';
+import { UserRole } from '../../models/entity/user.model';
 import bcrypt from 'bcrypt';
-import { User, UserRole } from '../../models/entity/user.entity';
+import jwt from 'jsonwebtoken';
+import { jwtConfig } from '../../config/jwt.config';
 
-describe('Integración - AUTH', () => {
-  const API_KEY = process.env.API_KEY || 'test_api_key';
+describe('AuthService - Integration Tests', () => {
+  let transaction: Transaction;
+  let testUser: UserInput;
 
-  let testUser: User;
-
-  beforeAll(async () => {
-    const hashedPassword = await bcrypt.hash('password123', 10);
-
-    // Crear instancia real de User
-    testUser = new User(
-      1,
-      'TestUser',
-      'testuser@example.com',
-      hashedPassword,
-      'Calle Falsa 123',
-      UserRole.USER,
-    );
-
-    // Mockear getByName para login
-    jest.spyOn(UserService, 'getByName').mockImplementation(async (name: string) => {
-      return name === testUser.name ? testUser : undefined;
-    });
-
-    // Mockear getByEmail para forgot-password
-    jest.spyOn(UserService, 'getByEmail').mockImplementation(async (email: string) => {
-      return email === testUser.email ? testUser : undefined;
-    });
+  beforeEach(async () => {
+    transaction = await sequelize.transaction();
+    testUser = {
+      name: 'AuthTestUser',
+      email: 'authtest@example.com',
+      password: 'Password123',
+      address: 'Auth Street 1',
+      role: UserRole.USER,
+    };
   });
 
-  afterAll(() => {
-    jest.restoreAllMocks();
+  afterEach(async () => {
+    await transaction.rollback(); // limpia la DB después de cada test
   });
 
-  // ------------------- LOGIN -------------------
-  describe('POST /api/auth/login', () => {
-    it('debería iniciar sesión con credenciales válidas y devolver un token', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .set('x-api-key', API_KEY)
-        .send({ name: 'TestUser', password: 'password123' });
+  it('should validate a user by name and password', async () => {
+    // Crear usuario real en DB con transacción
+    const user = await UserService.create(testUser, transaction);
 
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBe('Login exitoso');
-      expect(res.body.token).toBeDefined();
-      expect(res.body.user.name).toBe(testUser.name);
-    });
+    const validated = await AuthService.validateUserByName(user.name, testUser.password, transaction);
 
-    it('debería retornar 401 si la contraseña es incorrecta', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .set('x-api-key', API_KEY)
-        .send({ name: 'TestUser', password: 'wrongpass' });
-
-      expect(res.status).toBe(401);
-      expect(res.body.message).toBe('Credenciales inválidas');
-    });
-
-    it('debería retornar 401 si el usuario no existe', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .set('x-api-key', API_KEY)
-        .send({ name: 'NoExiste', password: 'password123' });
-
-      expect(res.status).toBe(401);
-      expect(res.body.message).toBe('Credenciales inválidas');
-    });
-
-    it('debería retornar 422 si faltan campos o no cumplen el schema', async () => {
-      const res = await request(app)
-        .post('/api/auth/login')
-        .set('x-api-key', API_KEY)
-        .send({ name: 'Te' }); // contraseña faltante
-
-      expect(res.status).toBe(422);
-      expect(res.body.errors).toBeDefined();
-    });
+    expect(validated).toBeDefined();
+    expect(validated?.user_id).toBe(user.user_id);
+    expect(validated?.email).toBe(user.email);
   });
 
-  // ------------------- FORGOT PASSWORD -------------------
-  describe('POST /api/auth/forgot-password', () => {
-    it('debería enviar un "correo" si el email existe', async () => {
-      const res = await request(app)
-        .post('/api/auth/forgot-password')
-        .set('x-api-key', API_KEY)
-        .send({ email: 'testuser@example.com' });
+  it('should return null if user does not exist', async () => {
+    const validated = await AuthService.validateUserByName('NonExistent', 'any', transaction);
+    expect(validated).toBeNull();
+  });
 
-      expect(res.status).toBe(200);
-      expect(res.body.message).toBe('Se enviaron instrucciones a su correo electrónico');
-    });
+  it('should return null if password is incorrect', async () => {
+    const user = await UserService.create(testUser, transaction);
+    const validated = await AuthService.validateUserByName(user.name, 'WrongPassword', transaction);
+    expect(validated).toBeNull();
+  });
 
-    it('debería retornar 404 si el email no pertenece a ningún usuario', async () => {
-      const res = await request(app)
-        .post('/api/auth/forgot-password')
-        .set('x-api-key', API_KEY)
-        .send({ email: 'noexiste@example.com' });
+  it('should generate a valid JWT token', async () => {
+    const user = await UserService.create(testUser, transaction);
+    const token = await AuthService.generateToken(user);
 
-      expect(res.status).toBe(404);
-      expect(res.body.message).toBe('No existe un usuario con ese email');
-    });
+    expect(token).toBeDefined();
 
-    it('debería retornar 422 si el email es inválido', async () => {
-      const res = await request(app)
-        .post('/api/auth/forgot-password')
-        .set('x-api-key', API_KEY)
-        .send({ email: 'correo-invalido' });
+    const decoded = jwt.verify(token, jwtConfig.secret) as any;
+    expect(decoded.user_id).toBe(user.user_id);
+    expect(decoded.role).toBe(user.role);
+  });
 
-      expect(res.status).toBe(422);
-      expect(res.body.errors).toBeDefined();
-    });
+  it('should simulate sending a password reset', async () => {
+    const user = await UserService.create(testUser, transaction);
+    const result = await AuthService.sendPasswordReset(user.email, transaction);
+
+    expect(result).toBe(true);
+  });
+
+  it('should return false if password reset email does not exist', async () => {
+    const result = await AuthService.sendPasswordReset('unknown@example.com', transaction);
+    expect(result).toBe(false);
   });
 });

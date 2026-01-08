@@ -97,42 +97,307 @@
 
 // export default new OrderRepository();
 
+
+// src/repositories/order.repository.ts
+// import { sequelize } from '../config/database.config';
+// import { Order, OrderStatus } from '../models/entity/order.model';
+// import { OrderDetail } from '../models/entity/orderDetail.model';
+// import { OrderInput } from '../dtos/order.dto';
+// import productService from '../services/product.service';
+
+// class OrderRepository {
+//   async getAll(): Promise<Order[]> {
+//     return Order.findAll({ include: [{ model: OrderDetail, as: 'details' }] });
+//   }
+
+//   async getById(order_id: number): Promise<Order | null> {
+//     return Order.findByPk(order_id, {
+//       include: [{ model: OrderDetail, as: 'details' }],
+//     });
+//   }
+
+//   async getByUserId(user_id: number): Promise<Order[]> {
+//     return Order.findAll({
+//       where: { user_id },
+//       include: [{ model: OrderDetail, as: 'details' }],
+//     });
+//   }
+
+//   /**
+//    * CREA ORDEN + DETALLES + ACTUALIZA STOCK (ATÓMICO)
+//    */
+//   async create(data: OrderInput): Promise<Order> {
+//     if (!data.items || data.items.length === 0) {
+//       throw new Error('No se pueden crear órdenes vacías');
+//     }
+
+//     return sequelize.transaction(async (t) => {
+//       // 1️⃣ Crear orden base
+//       const order = await Order.create(
+//         {
+//           user_id: data.user_id,
+//           status: 'pending',
+//           total: 0,
+//         },
+//         { transaction: t }
+//       );
+
+//       let total = 0;
+
+//       // 2️⃣ Crear detalles
+//       for (const item of data.items) {
+//         const product = await productService.getById(item.productId);
+//         if (!product) {
+//           throw new Error(`Producto ${item.productId} no encontrado`);
+//         }
+
+//         if (product.stock < item.quantity) {
+//           throw new Error(`Stock insuficiente para ${product.name}`);
+//         }
+
+//         await productService.decreaseStock(item.productId, item.quantity);
+
+//         const detail = await OrderDetail.create(
+//           {
+//             order_id: order.order_id,
+//             product_id: item.productId,
+//             quantity: item.quantity,
+//             unit_price: product.price,
+//           },
+//           { transaction: t }
+//         );
+
+//         total += Number(detail.subtotal);
+//       }
+
+//       // 3️⃣ Actualizar total
+//       order.total = total;
+//       await order.save({ transaction: t });
+
+//       // 4️⃣ Cargar detalles para devolver orden completa
+//       await order.reload({
+//         include: [{ model: OrderDetail, as: 'details' }],
+//         transaction: t,
+//       });
+
+//       return order;
+//     });
+//   }
+
+//   async updateStatus(
+//     order_id: number,
+//     status: OrderStatus
+//   ): Promise<Order | null> {
+//     const order = await Order.findByPk(order_id);
+//     if (!order) return null;
+
+//     order.status = status;
+//     await order.save();
+//     return order;
+//   }
+
+//   async delete(order_id: number): Promise<boolean> {
+//     const deleted = await Order.destroy({ where: { order_id } });
+//     return deleted > 0;
+//   }
+// }
+
+// export default new OrderRepository();
+
 // src/repositories/order.repository.ts
 
-import { sequelize } from '../config/database.config';
+// import { Order, OrderStatus } from '../models/entity/order.model';
+// import { OrderDetail } from '../models/entity/orderDetail.model';
+// import { OrderInput } from '../dtos/order.dto';
+// import { Transaction } from 'sequelize';
+// import productService from '../services/product.service';
+
+// class OrderRepository {
+//   async getAll(transaction: Transaction | null = null): Promise<Order[]> {
+//     return Order.findAll({
+//       include: [{ model: OrderDetail, as: 'details' }],
+//       transaction,
+//     });
+//   }
+
+//   async getById(order_id: number, transaction: Transaction | null = null): Promise<Order | null> {
+//     return Order.findByPk(order_id, {
+//       include: [{ model: OrderDetail, as: 'details' }],
+//       transaction,
+//     });
+//   }
+
+//   async getByUserId(user_id: number, transaction: Transaction | null = null): Promise<Order[]> {
+//     return Order.findAll({
+//       where: { user_id },
+//       include: [{ model: OrderDetail, as: 'details' }],
+//       transaction,
+//     });
+//   }
+
+//   /**
+//    * CREA ORDEN + DETALLES + ACTUALIZA STOCK (ATÓMICO)
+//    */
+//   async create(data: OrderInput, transaction: Transaction | null = null): Promise<Order> {
+//     if (!data.items || data.items.length === 0) {
+//       throw new Error('No se pueden crear órdenes vacías');
+//     }
+
+//     const order = await Order.create(
+//       {
+//         user_id: data.user_id,
+//         status: 'pending',
+//         total: 0,
+//       },
+//       { transaction }
+//     );
+
+//     let total = 0;
+
+//     for (const item of data.items) {
+//       const product = await productService.getById(item.productId);
+//       if (!product) {
+//         throw new Error(`Producto ${item.productId} no encontrado`);
+//       }
+
+//       if (product.stock < item.quantity) {
+//         throw new Error(`Stock insuficiente para ${product.name}`);
+//       }
+
+//       await productService.decreaseStock(item.productId, item.quantity, transaction);
+//       //await productService.decreaseStock(item.productId, item.quantity, t)
+
+//       const detail = await OrderDetail.create(
+//         {
+//           order_id: order.order_id,
+//           product_id: item.productId,
+//           quantity: item.quantity,
+//           unit_price: product.price,
+//         },
+//         { transaction }
+//       );
+
+//       total += Number(detail.subtotal);
+//     }
+
+//     order.total = total;
+//     await order.save({ transaction });
+
+//     await order.reload({
+//       include: [{ model: OrderDetail, as: 'details' }],
+//       transaction,
+//     });
+
+//     return order;
+//   }
+
+//   async updateStatus(order_id: number, status: OrderStatus, transaction: Transaction | null = null): Promise<Order | null> {
+//     const order = await Order.findByPk(order_id, { transaction });
+//     if (!order) return null;
+
+//     order.status = status;
+//     await order.save({ transaction });
+//     return order;
+//   }
+
+//   async delete(order_id: number, transaction: Transaction | null = null): Promise<boolean> {
+//     const deleted = await Order.destroy({ where: { order_id }, transaction });
+//     return deleted > 0;
+//   }
+// }
+
+// export default new OrderRepository();
+
+// src/repositories/order.repository.ts
+// src/repositories/order.repository.ts
 import { Order, OrderStatus } from '../models/entity/order.model';
 import { OrderDetail } from '../models/entity/orderDetail.model';
 import { OrderInput } from '../dtos/order.dto';
+import { Transaction } from 'sequelize';
 import productService from '../services/product.service';
 
 class OrderRepository {
-  async getAll(): Promise<Order[]> {
-    return Order.findAll({ include: [{ model: OrderDetail, as: 'details' }] });
-  }
-
-  async getById(order_id: number): Promise<Order | null> {
-    return Order.findByPk(order_id, {
+  async getAll(transaction: Transaction | null = null): Promise<Order[]> {
+    return Order.findAll({
       include: [{ model: OrderDetail, as: 'details' }],
+      transaction,
     });
   }
 
-  async getByUserId(user_id: number): Promise<Order[]> {
+  async getById(order_id: number, transaction: Transaction | null = null): Promise<Order | null> {
+    return Order.findByPk(order_id, {
+      include: [{ model: OrderDetail, as: 'details' }],
+      transaction,
+    });
+  }
+
+  async getByUserId(user_id: number, transaction: Transaction | null = null): Promise<Order[]> {
     return Order.findAll({
       where: { user_id },
       include: [{ model: OrderDetail, as: 'details' }],
+      transaction,
     });
   }
 
-  /**
-   * CREA ORDEN + DETALLES + ACTUALIZA STOCK (ATÓMICO)
-   */
-  async create(data: OrderInput): Promise<Order> {
+  // async create(data: OrderInput, transaction: Transaction | null = null): Promise<Order> {
+  //   if (!data.items || data.items.length === 0) {
+  //     throw new Error('No se pueden crear órdenes vacías');
+  //   }
+
+  //   const order = await Order.create(
+  //     {
+  //       user_id: data.user_id,
+  //       status: 'pending',
+  //       total: 0,
+  //     },
+  //     { transaction }
+  //   );
+
+  //   let total = 0;
+
+  //   for (const item of data.items) {
+  //     const product = await productService.getById(item.productId, transaction ?? undefined);
+  //     if (!product) throw new Error(`Producto ${item.productId} no encontrado`);
+  //     if (product.stock < item.quantity) throw new Error(`Stock insuficiente para ${product.name}`);
+
+  //     //await productService.decreaseStock(item.productId, item.quantity, transaction);
+  //     await productService.decreaseStock(
+  //       item.productId,
+  //       item.quantity,
+  //       transaction ?? undefined
+  //     );
+
+  //     const detail = await OrderDetail.create(
+  //       {
+  //         order_id: order.order_id,
+  //         product_id: item.productId,
+  //         quantity: item.quantity,
+  //         unit_price: product.price,
+  //       },
+  //       { transaction }
+  //     );
+
+  //     total += Number(detail.subtotal);
+  //   }
+
+  //   order.total = total;
+  //   await order.save({ transaction });
+
+  //   await order.reload({
+  //     include: [{ model: OrderDetail, as: 'details' }],
+  //     transaction,
+  //   });
+
+  //   return order;
+  // }
+  async create(data: OrderInput, transaction: Transaction | null = null): Promise<Order> {
     if (!data.items || data.items.length === 0) {
       throw new Error('No se pueden crear órdenes vacías');
     }
 
-    return sequelize.transaction(async (t) => {
-      // 1️⃣ Crear orden base
+    const t = transaction ?? await Order.sequelize!.transaction();
+
+    try {
       const order = await Order.create(
         {
           user_id: data.user_id,
@@ -144,18 +409,17 @@ class OrderRepository {
 
       let total = 0;
 
-      // 2️⃣ Crear detalles
       for (const item of data.items) {
-        const product = await productService.getById(item.productId);
+        const product = await productService.getById(item.productId, t);
         if (!product) {
           throw new Error(`Producto ${item.productId} no encontrado`);
         }
 
         if (product.stock < item.quantity) {
-          throw new Error(`Stock insuficiente para ${product.name}`);
+          throw new Error('Stock insuficiente');
         }
 
-        await productService.decreaseStock(item.productId, item.quantity);
+        await productService.decreaseStock(item.productId, item.quantity, t);
 
         const detail = await OrderDetail.create(
           {
@@ -170,36 +434,38 @@ class OrderRepository {
         total += Number(detail.subtotal);
       }
 
-      // 3️⃣ Actualizar total
       order.total = total;
       await order.save({ transaction: t });
 
-      // 4️⃣ Cargar detalles para devolver orden completa
       await order.reload({
         include: [{ model: OrderDetail, as: 'details' }],
         transaction: t,
       });
 
+      if (!transaction) await t.commit();
+
       return order;
-    });
+    } catch (error) {
+      if (!transaction) await t.rollback();
+      throw error;
+    }
   }
 
-  async updateStatus(
-    order_id: number,
-    status: OrderStatus
-  ): Promise<Order | null> {
-    const order = await Order.findByPk(order_id);
+
+  async updateStatus(order_id: number, status: OrderStatus, transaction: Transaction | null = null): Promise<Order | null> {
+    const order = await Order.findByPk(order_id, { transaction });
     if (!order) return null;
 
     order.status = status;
-    await order.save();
+    await order.save({ transaction });
     return order;
   }
 
-  async delete(order_id: number): Promise<boolean> {
-    const deleted = await Order.destroy({ where: { order_id } });
+  async delete(order_id: number, transaction: Transaction | null = null): Promise<boolean> {
+    const deleted = await Order.destroy({ where: { order_id }, transaction });
     return deleted > 0;
   }
 }
 
 export default new OrderRepository();
+

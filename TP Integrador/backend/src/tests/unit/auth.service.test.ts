@@ -108,7 +108,8 @@ describe('AuthService', () => {
 
       const result = await AuthService.validateUserByName('TestUser', 'password123');
 
-      expect(UserService.getByName).toHaveBeenCalledWith('TestUser');
+      ///expect(UserService.getByName).toHaveBeenCalledWith('TestUser');
+      expect(UserService.getByName).toHaveBeenCalledWith('TestUser', undefined);
       expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashedPassword');
       expect(result).toEqual(mockUser);
     });
@@ -155,7 +156,8 @@ describe('AuthService', () => {
 
       const result = await AuthService.sendPasswordReset('test@example.com');
 
-      expect(UserService.getByEmail).toHaveBeenCalledWith('test@example.com');
+      //expect(UserService.getByEmail).toHaveBeenCalledWith('test@example.com');
+      expect(UserService.getByEmail).toHaveBeenCalledWith('test@example.com', undefined);
       expect(result).toBe(true);
     });
 

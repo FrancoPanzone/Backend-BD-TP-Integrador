@@ -34,42 +34,84 @@ export class CategoryService {
 export default new CategoryService(); */
 
 // src/services/category.service.ts
+// import { CategoryInput } from '../dtos/category.dto';
+// import CategoryRepository from '../repositories/category.repository';
+// import { Category } from '../models/entity/category.model';
+
+// export class CategoryService {
+//   private categoryRepo = CategoryRepository;
+
+//   async getAll(): Promise<Category[]> {
+//     return this.categoryRepo.getAll();
+//   }
+
+//   async getById(id: number): Promise<Category> {
+//     const category = await this.categoryRepo.getById(id);
+//     if (!category) {
+//       throw new Error(`La categoría con id ${id} no existe`);
+//     }
+//     return category;
+//   }
+
+//   async create(data: Omit<CategoryInput, 'category_id'>): Promise<Category> {
+//     return this.categoryRepo.create(data);
+//   }
+
+//   async update(id: number, data: Partial<CategoryInput>): Promise<Category> {
+//     const updated = await this.categoryRepo.update(id, data);
+//     if (!updated) {
+//       throw new Error(`La categoría con id ${id} no existe`);
+//     }
+//     return updated;
+//   }
+
+//   async delete(id: number): Promise<void> {
+//     const deleted = await this.categoryRepo.delete(id);
+//     if (!deleted) {
+//       throw new Error(`La categoría con id ${id} no existe`);
+//     }
+//   }
+// }
+
+// export default new CategoryService();
+
+// src/services/category.service.ts
 import { CategoryInput } from '../dtos/category.dto';
 import CategoryRepository from '../repositories/category.repository';
 import { Category } from '../models/entity/category.model';
+import { Transaction } from 'sequelize';
 
 export class CategoryService {
   private categoryRepo = CategoryRepository;
 
-  async getAll(): Promise<Category[]> {
-    return this.categoryRepo.getAll();
+  // Obtener todas las categorías, opcionalmente en una transacción
+  async getAll(transaction?: Transaction): Promise<Category[]> {
+    return this.categoryRepo.getAll(transaction);
   }
 
-  async getById(id: number): Promise<Category> {
-    const category = await this.categoryRepo.getById(id);
-    if (!category) {
-      throw new Error(`La categoría con id ${id} no existe`);
-    }
+  // Obtener categoría por ID con transacción opcional
+  async getById(id: number, transaction?: Transaction): Promise<Category> {
+    const category = await this.categoryRepo.getById(id, transaction);
+    if (!category) throw new Error(`La categoría con id ${id} no existe`);
     return category;
   }
 
-  async create(data: Omit<CategoryInput, 'category_id'>): Promise<Category> {
-    return this.categoryRepo.create(data);
+  // Crear categoría con transacción opcional
+  async create(data: Omit<CategoryInput, 'category_id'>, transaction?: Transaction): Promise<Category> {
+    return this.categoryRepo.create(data, transaction);
   }
 
-  async update(id: number, data: Partial<CategoryInput>): Promise<Category> {
-    const updated = await this.categoryRepo.update(id, data);
-    if (!updated) {
-      throw new Error(`La categoría con id ${id} no existe`);
-    }
+  // Actualizar categoría con transacción opcional
+  async update(id: number, data: Partial<CategoryInput>, transaction?: Transaction): Promise<Category> {
+    const updated = await this.categoryRepo.update(id, data, transaction);
+    if (!updated) throw new Error(`La categoría con id ${id} no existe`);
     return updated;
   }
 
-  async delete(id: number): Promise<void> {
-    const deleted = await this.categoryRepo.delete(id);
-    if (!deleted) {
-      throw new Error(`La categoría con id ${id} no existe`);
-    }
+  // Eliminar categoría con transacción opcional
+  async delete(id: number, transaction?: Transaction): Promise<void> {
+    const deleted = await this.categoryRepo.delete(id, transaction);
+    if (!deleted) throw new Error(`La categoría con id ${id} no existe`);
   }
 }
 
