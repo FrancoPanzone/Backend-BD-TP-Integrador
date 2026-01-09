@@ -541,10 +541,16 @@ class OrderRepository {
     }
   }
 
-  async updateStatus(order_id: number, status: OrderStatus, transaction: Transaction | null = null): Promise<Order | null> {
-    const order = await Order.findByPk(order_id, { transaction });
-    if (!order) return null;
+  // async updateStatus(order_id: number, status: OrderStatus, transaction: Transaction | null = null): Promise<Order | null> {
+  //   const order = await Order.findByPk(order_id, { transaction });
+  //   if (!order) return null;
 
+  //   order.status = status;
+  //   await order.save({ transaction });
+  //   return order;
+  // }
+
+  async updateStatus( order: Order, status: OrderStatus, transaction: Transaction | null= null ): Promise<Order> {
     order.status = status;
     await order.save({ transaction });
     return order;

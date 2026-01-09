@@ -639,15 +639,27 @@ class OrderService {
   // }
 
 
-  async updateStatus(id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
-    const order = await this.orderRepo.updateStatus(id, status, transaction ?? null);
+  // async updateStatus(id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
+  //   const order = await this.orderRepo.updateStatus(id, status, transaction ?? null);
+  //   if (!order) throw new Error('Orden no encontrada');
+
+  //   if (order.status === 'cancel') {
+  //     throw new Error('No se puede modificar una orden cancelada');
+  //   }
+
+  //   return order;
+  // }
+
+  async updateStatus( id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
+    const order = await this.orderRepo.getById(id, transaction);
     if (!order) throw new Error('Orden no encontrada');
 
+    // ✅ regla de negocio
     if (order.status === 'cancel') {
       throw new Error('No se puede modificar una orden cancelada');
     }
 
-    return order;
+    return this.orderRepo.updateStatus(order, status, transaction);
   }
 
   async delete(id: number, transaction?: Transaction): Promise<void> {

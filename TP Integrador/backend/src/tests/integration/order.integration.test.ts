@@ -359,7 +359,7 @@
 // });
 
 
-
+// src/tests/integration/order.integration.test.ts
 import orderService from '../../services/order.service';
 import userService from '../../services/user.service';
 import ProductService from '../../services/product.service';
@@ -503,12 +503,12 @@ describe('Order Integration Tests with Transactions', () => {
 
     const updated = await orderService.updateStatus(
       order.order_id,
-      'completed' as OrderStatus,
+      'paid' as OrderStatus,
       transaction
     );
 
     expect(updated).toBeDefined();
-    expect(updated.status).toBe('completed');
+    expect(updated.status).toBe('paid');
   });
 
   it('should delete an order', async () => {
