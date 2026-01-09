@@ -135,6 +135,11 @@ Agregamos las dependencias en el backend:
 vamos al backend con cd  y luego:
 ```bash
 npm install
+
+mejor
+
+npm install --ignore-scripts
+
 ```
 
 Agregamos las dependencias en el frontend:

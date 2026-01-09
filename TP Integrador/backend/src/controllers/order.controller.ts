@@ -124,20 +124,41 @@ class OrderController {
   }
 
   // POST /api/orders/checkout/:userId
+  // async checkout(req: Request, res: Response) {
+  //   const userId = Number(req.params.userId);
+  //   if (isNaN(userId)) return res.status(400).json({ error: 'ID de usuario inválido' });
+
+  //   try {
+  //     const order = await OrderService.checkout(userId);
+  //     const orderWithDetails = await OrderService.getById(order.order_id); // trae detalles
+  //     //res.status(201).json(order);
+  //     res.json(orderWithDetails);
+
+  //   } catch (err: any) {
+  //     res.status(400).json({ error: err.message || 'No se pudo hacer checkout' });
+  //   }
+  // }
+
+  // POST /api/orders/checkout/:userId
   async checkout(req: Request, res: Response) {
     const userId = Number(req.params.userId);
-    if (isNaN(userId)) return res.status(400).json({ error: 'ID de usuario inválido' });
+
+    if (isNaN(userId)) {
+      return res.status(400).json({ error: 'ID de usuario inválido' });
+    }
 
     try {
       const order = await OrderService.checkout(userId);
-      const orderWithDetails = await OrderService.getById(order.order_id); // trae detalles
-      //res.status(201).json(order);
-      res.json(orderWithDetails);
+      const orderWithDetails = await OrderService.getById(order.order_id);
 
+      return res.json(orderWithDetails);
     } catch (err: any) {
-      res.status(400).json({ error: err.message || 'No se pudo hacer checkout' });
+      return res.status(400).json({
+        error: err.message || 'No se pudo hacer checkout',
+      });
     }
   }
+
 }
 
 export default new OrderController();

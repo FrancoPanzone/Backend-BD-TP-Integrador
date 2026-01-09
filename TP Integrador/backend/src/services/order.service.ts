@@ -592,6 +592,53 @@ class OrderService {
     return order;
   }
 
+  // en este el vacio del carrito se llama en el order repo
+  // async checkout(
+  //   user_id: number,
+  //   transaction: Transaction | null = null
+  // ): Promise<Order> {
+  //   const t = transaction ?? await sequelize.transaction();
+
+  //   try {
+  //     await this.validateUser(user_id, t);
+
+  //     const cart = await CartService.getCartByUserId(user_id, t);
+  //     if (!cart) {
+  //       throw new Error(`El usuario ${user_id} no tiene carrito`);
+  //     }
+
+  //     const cartItems = await ItemCartService.getByCartId(cart.cart_id, t);
+  //     if (!cartItems || cartItems.length === 0) {
+  //       throw new Error('El carrito está vacío');
+  //     }
+
+  //     // Crear orden + vaciar carrito dentro del repo (rama A)
+  //     const order = await this.orderRepo.create(
+  //       {
+  //         user_id,
+  //         cart_id: cart.cart_id, // CLAVE
+  //         items: cartItems.map(i => ({
+  //           productId: i.product_id,
+  //           quantity: i.quantity,
+  //         })),
+  //       },
+  //       t
+  //     );
+
+  //     if (!transaction) {
+  //       await t.commit();
+  //     }
+
+  //     return order;
+  //   } catch (error) {
+  //     if (!transaction) {
+  //       await t.rollback();
+  //     }
+  //     throw error;
+  //   }
+  // }
+
+
   async updateStatus(id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
     const order = await this.orderRepo.updateStatus(id, status, transaction ?? null);
     if (!order) throw new Error('Orden no encontrada');
