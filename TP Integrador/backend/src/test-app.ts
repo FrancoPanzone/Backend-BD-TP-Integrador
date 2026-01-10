@@ -20,20 +20,20 @@
 // export default app;
 
 // backend/src/test-app.ts
-import express from 'express';
-import authRoutes from './routes/auth.routes';
-import userRoutes from './routes/user.routes';
+// import express from 'express';
+// import authRoutes from './routes/auth.routes';
+// import userRoutes from './routes/user.routes';
 
-// Importa solo los routers que quieras testear
-// Para otros tests puedes agregar routers mockeados
+// // Importa solo los routers que quieras testear
+// // Para otros tests puedes agregar routers mockeados
 
-const testApp = express();
+// const testApp = express();
 
-testApp.use(express.json());
-testApp.use(express.urlencoded({ extended: true }));
+// testApp.use(express.json());
+// testApp.use(express.urlencoded({ extended: true }));
 
-// solo los routers que quieres testear
-testApp.use('/api/auth', authRoutes);
-testApp.use('/api/users', userRoutes);
+// // solo los routers que quieres testear
+// testApp.use('/api/auth', authRoutes);
+// testApp.use('/api/users', userRoutes);
 
-export default testApp;
+// export default testApp;
