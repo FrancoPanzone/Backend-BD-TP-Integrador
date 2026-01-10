@@ -1,5 +1,5 @@
 # backend/Dockerfile.dev
-FROM node:16-alpine
+FROM node:18-alpine
 
 # Instalar dependencias necesarias para desarrollo
 RUN apk add --no-cache git bash

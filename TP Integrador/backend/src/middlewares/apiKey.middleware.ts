@@ -4,6 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 
 export const apiKeyMiddleware = (req: Request, res: Response, next: NextFunction) => {
   //console.log('API_KEY ENV:', env.API_KEY);
+  console.log('🔹 apiKeyMiddleware', req.headers['x-api-key']);
 
   const apiKey = req.headers['x-api-key'];
 

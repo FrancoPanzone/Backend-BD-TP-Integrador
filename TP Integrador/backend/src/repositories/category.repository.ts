@@ -1,34 +1,36 @@
+// src/repositories/category.repository.ts
 import { Category } from '../models/entity/category.model';
 import { CategoryInput } from '../dtos/category.dto';
+import { Transaction } from 'sequelize';
 
 export class CategoryRepository {
-  async create(data: CategoryInput) {
-    return await Category.create(data); // Inserta en PostgreSQL
+  // Crear categoría
+  async create(data: CategoryInput, transaction: Transaction | null = null) {
+    return await Category.create(data, { transaction });
   }
 
-  async getAll() {
-    return await Category.findAll();
+  // Traer todas las categorías
+  async getAll(transaction: Transaction | null = null) {
+    return await Category.findAll({ transaction });
   }
 
-  async getById(id: number) {
-    return await Category.findByPk(id);
+  // Traer categoría por ID
+  async getById(id: number, transaction: Transaction | null = null) {
+    return await Category.findByPk(id, { transaction });
   }
 
-//   async update(id: number, data: CategoryInput) {
-//     const category = await Category.findByPk(id);
-//     if (!category) return null;
-//     return await category.update(data);
-//   }
-async update(id: number, data: Partial<CategoryInput>) { // <-- Partial
-    const category = await Category.findByPk(id);
+  // Actualizar categoría
+  async update(id: number, data: Partial<CategoryInput>, transaction: Transaction | null = null) {
+    const category = await Category.findByPk(id, { transaction });
     if (!category) return null;
-    return category.update(data); // Sequelize acepta campos parciales
+    return await category.update(data, { transaction });
   }
 
-  async delete(id: number) {
-    const category = await Category.findByPk(id);
+  // Eliminar categoría
+  async delete(id: number, transaction: Transaction | null = null) {
+    const category = await Category.findByPk(id, { transaction });
     if (!category) return false;
-    await category.destroy();
+    await category.destroy({ transaction });
     return true;
   }
 }

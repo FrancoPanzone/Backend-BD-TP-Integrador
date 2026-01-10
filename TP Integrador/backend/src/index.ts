@@ -41,6 +41,7 @@ app.listen(PORT, () => {
 //   }
 // })();
 
+// src/index.ts
 //TODO: singleton con neon
 import 'dotenv/config';
 import app from './app';

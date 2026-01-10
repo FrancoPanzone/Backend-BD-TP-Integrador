@@ -460,3 +460,81 @@ TrabajoFinalIntegrador/
 ├──.prettierrc						   # Configuración de prettier
 
 ```
+
+## 📁 Estructura del Proyecto 
+```
+TP INTEGRADOR/
+├─ backend/
+│  ├─ .husky/
+│  ├─ config/
+│  │  └─ config.js
+│  ├─ images/
+│  ├─ migrations/
+│  ├─ node_modules/
+│  ├─ public/
+│  ├─ seeders/
+│  ├─ src/
+│  │  ├─ config/
+│  │  ├─ controllers/
+│  │  ├─ dtos/
+│  │  ├─ helpers/
+│  │  ├─ middlewares/
+│  │  ├─ models/
+│  │  │  └─ entity/
+│  │  │     └─ index.js
+│  │  ├─ patterns\
+│  │  │  └─ singleton/
+│  │  │     └─ database.connection.ts
+│  │  ├─ repositories/
+│  │  ├─ routes/
+│  │  ├─ schemas/
+│  │  ├─ scripts/
+│  │  ├─ services/
+│  │  └─ tests/
+│  │     ├─ integration/
+│  │     │  ├─ auth.integration.test.ts
+│  │     │  ├─ category.integration.test.ts
+│  │     │  ├─ order.integration.test.ts
+│  │     │  ├─ product.integration.test.ts
+│  │     │  └─ user.integration.test.ts
+│  │     ├─ unit/
+│  │     │  ├─ auth.service.test.ts
+│  │     │  ├─ cart.service.test.ts
+│  │     │  ├─ category.service.test.ts
+│  │     │  ├─ itemCart.service.test.ts
+│  │     │  ├─ order.service.test.ts
+│  │     │  ├─ orderDetail.service.test.ts
+│  │     │  ├─ product.service.test.ts
+│  │     │  ├─ review.service.test.ts
+│  │     │  └─ user.service.test.ts
+│  │     └─ setupTests.ts
+│  ├─ types/
+│  ├─ utils/
+│  ├─ app.ts
+│  ├─ index.ts
+│  ├─ test-app.ts
+│  ├─ uploads/
+│  ├─ .env.test
+│  ├─ .gitignore
+│  ├─ .prettierrc
+│  ├─ Dockerfile
+│  ├─ Dockerfile.dev
+│  ├─ eslint.config.ts
+│  ├─ jest.config.cjs
+│  ├─ jest.setup.ts
+│  ├─ package-lock.json
+│  ├─ package.json
+│  ├─ tsconfig.build.json
+│  ├─ tsconfig.json
+│  └─ tsconfig.test.json
+├─ database/
+├─ nginx/
+├─ pgadmin/
+├─ scripts/
+├─ .env
+├─ .env.test
+├─ .gitignore
+├─ docker-compose.yml
+├─ GuiaTuristica-README.md
+└─ README.md
+```

@@ -76,17 +76,18 @@ Order.init(
     sequelize,
     tableName: 'Orders',
     timestamps: true,
-    hooks: {
-      beforeCreate: (order) => {
-        if (!order.total && order.details) {
-          order.total = order.details.reduce((sum, d) => sum + d.subtotal, 0);
-        }
-      },
-      beforeUpdate: (order) => {
-        if (order.details) {
-          order.total = order.details.reduce((sum, d) => sum + d.subtotal, 0);
-        }
-      },
-    },
+    // como el subtotal depende del hook de orderDetail mejor hacer esto en el repo de Order
+    // hooks: {
+    //   beforeCreate: (order) => {
+    //     if (!order.total && order.details) {
+    //       order.total = order.details.reduce((sum, d) => sum + d.subtotal, 0);
+    //     }
+    //   },
+    //   beforeUpdate: (order) => {
+    //     if (order.details) {
+    //       order.total = order.details.reduce((sum, d) => sum + d.subtotal, 0);
+    //     }
+    //   },
+    // },
   }
 );

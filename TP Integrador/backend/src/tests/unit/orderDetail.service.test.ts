@@ -1,61 +1,3 @@
-// src/tests/unit/orderDetail.service.test.ts
-
-// import { OrderDetailInput } from '../../dtos/orderDetail.dto';
-// import { OrderDetail } from '../../models/entity/orderDetail.entity';
-// import orderDetailService from '../../services/orderDetail.service';
-
-// describe('OrderDetail Service - Unit Tests', () => {
-//   let createdOrderDetail: OrderDetail;
-
-//   const sampleOrderDetail: OrderDetailInput = {
-//     order_id: 1,
-//     product_id: 2,
-//     quantity: 1,
-//     unit_price: 8000,
-//   };
-
-//   beforeAll(async () => {
-//     createdOrderDetail = await orderDetailService.create(sampleOrderDetail);
-//   });
-
-//   it('should create a new order detail', async () => {
-//     //console.log('Created OrderDetail:', createdOrderDetail);
-//     expect(createdOrderDetail).toHaveProperty('order_detail_id');
-//     expect(createdOrderDetail.getQuantity()).toBe(sampleOrderDetail.quantity);
-//   });
-
-//   it('should return all order details', async () => {
-//     const all = await orderDetailService.getAll();
-//     //console.log('All orderDetails:', all);
-//     expect(all.length).toBeGreaterThan(0);
-//   });
-
-//   it('should get order details by order ID', async () => {
-//     const ordersdetail = await orderDetailService.getByOrderId(sampleOrderDetail.order_id);
-//     //console.log(`order details for order_id=${sampleOrderDetail.order_id}:`, ordersdetail);
-//     expect(ordersdetail.length).toBeGreaterThan(0);
-//     expect(ordersdetail[0]!.getOrderId()).toBe(sampleOrderDetail.order_id);
-//   });
-
-//   it('should get order details by product ID', async () => {
-//     const ordersdetail = await orderDetailService.getByProductId(sampleOrderDetail.product_id);
-//     //console.log(`order details for product_ID=${sampleOrderDetail.product_id}:`, ordersdetail);
-//     expect(ordersdetail.length).toBeGreaterThan(0);
-//     expect(ordersdetail[0]!.getProductId()).toBe(sampleOrderDetail.product_id);
-//   });
-
-//   it('should delete an order detail', async () => {
-//     const id = createdOrderDetail.getOrderDetailId();
-
-//     await orderDetailService.delete(id);
-//     const all = await orderDetailService.getAll();
-
-//     const found = all.find((o) => o.getOrderDetailId() === id);
-//     expect(found).toBeUndefined();
-//   });
-// });
-
-// src/tests/unit/orderDetail.service.test.ts
 import orderDetailService from '../../services/orderDetail.service';
 import OrderDetailRepository from '../../repositories/orderDetail.repository';
 import { OrderDetailInput } from '../../dtos/orderDetail.dto';
@@ -63,7 +5,7 @@ import { OrderDetail } from '../../models/entity/orderDetail.model';
 
 jest.mock('../../repositories/orderDetail.repository');
 
-describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
+describe('OrderDetailService - Reglas de negocio (Unit)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
@@ -76,12 +18,20 @@ describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
       unit_price: 5000,
     };
 
-    const fakeOrderDetail = { ...input, order_detail_id: 1, subtotal: 15000 } as OrderDetail;
+    const fakeOrderDetail = {
+      ...input,
+      order_detail_id: 1,
+      subtotal: 15000,
+    } as OrderDetail;
+
     (OrderDetailRepository.create as jest.Mock).mockResolvedValue(fakeOrderDetail);
 
     const created = await orderDetailService.create(input);
 
-    expect(OrderDetailRepository.create).toHaveBeenCalledWith(input);
+    expect(OrderDetailRepository.create).toHaveBeenCalledWith(
+      input,
+      null
+    );
     expect(created.order_detail_id).toBe(1);
     expect(created.subtotal).toBe(15000);
   });
@@ -92,7 +42,7 @@ describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
 
     const all = await orderDetailService.getAll();
 
-    expect(OrderDetailRepository.getAll).toHaveBeenCalled();
+    expect(OrderDetailRepository.getAll).toHaveBeenCalledWith(null);
     expect(all.length).toBe(2);
   });
 
@@ -102,8 +52,11 @@ describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
 
     const result = await orderDetailService.getByOrderId(1);
 
-    expect(OrderDetailRepository.getByOrderId).toHaveBeenCalledWith(1);
-    expect(result[0]!.order_id).toBe(1); // ! para decir que existe
+    expect(OrderDetailRepository.getByOrderId).toHaveBeenCalledWith(
+      1,
+      null
+    );
+    expect(result[0]!.order_id).toBe(1);
   });
 
   it('obtiene order details por productId', async () => {
@@ -112,18 +65,26 @@ describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
 
     const result = await orderDetailService.getByProductId(2);
 
-    expect(OrderDetailRepository.getByProductId).toHaveBeenCalledWith(2);
-    expect(result[0]!.product_id).toBe(2); // ! para decir que existe
+    expect(OrderDetailRepository.getByProductId).toHaveBeenCalledWith(
+      2,
+      null
+    );
+    expect(result[0]!.product_id).toBe(2);
   });
 
   it('actualiza un order detail correctamente', async () => {
     const updatedData: Partial<OrderDetailInput> = { quantity: 5 };
     const fakeUpdated = { order_detail_id: 1, quantity: 5 } as OrderDetail;
+
     (OrderDetailRepository.update as jest.Mock).mockResolvedValue(fakeUpdated);
 
     const updated = await orderDetailService.update(1, updatedData);
 
-    expect(OrderDetailRepository.update).toHaveBeenCalledWith(1, updatedData);
+    expect(OrderDetailRepository.update).toHaveBeenCalledWith(
+      1,
+      updatedData,
+      null
+    );
     expect(updated!.quantity).toBe(5);
   });
 
@@ -132,7 +93,10 @@ describe('OrderDetailService - Reglas de negocio (nuevo test)', () => {
 
     const deleted = await orderDetailService.delete(1);
 
-    expect(OrderDetailRepository.delete).toHaveBeenCalledWith(1);
+    expect(OrderDetailRepository.delete).toHaveBeenCalledWith(
+      1,
+      null
+    );
     expect(deleted).toBe(true);
   });
 });
