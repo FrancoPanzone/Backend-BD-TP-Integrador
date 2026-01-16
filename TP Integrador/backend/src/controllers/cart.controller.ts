@@ -33,7 +33,8 @@ class CartController {
       return res.status(400).json({ error: 'userId es requerido' });
     }
 
-    const userId = parseInt(userIdParam);
+    //const userId = parseInt(userIdParam);
+    const userId = parseInt(userIdParam as string);
     if (isNaN(userId)) {
       return res.status(400).json({ error: 'userId inválido' });
     }
