@@ -1,4 +1,5 @@
 // src/tests/setupTests.ts
+//src/tests/setupIntegrationTests.ts
 import { DatabaseConnection } from '../patterns/singleton/database.connection';
 import { Sequelize } from 'sequelize';
 import '../models/entity'; // 🔹 importa modelos para asociaciones
@@ -15,7 +16,7 @@ beforeAll(async () => {
   // 1️⃣ Conexión a la DB
   await DatabaseConnection.connect();
   sequelize = DatabaseConnection.getInstance();
-  console.log('🟢 Base de datos conectada:', sequelize.getDatabaseName());
+  //console.log('🟢 Base de datos conectada:', sequelize.getDatabaseName());
 
   // 2️⃣ Crear usuario admin de prueba si no existe
   const passwordHash = await bcrypt.hash('admin123', 10);
@@ -37,9 +38,9 @@ beforeAll(async () => {
     process.env.JWT_SECRET || 'mi_jwt_secret_ecommerce',
     { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
   );
-  console.log(process.env.JWT_SECRET)
+  //console.log(process.env.JWT_SECRET)
 
-  console.log('🔑 Admin de test creado con token JWT');
+  //console.log('🔑 Admin de test creado con token JWT');
 });
 
 afterAll(async () => {
@@ -48,5 +49,5 @@ afterAll(async () => {
 
   // 5️⃣ Cerrar conexión
   await sequelize.close();
-  console.log('🔒 Conexión a la DB cerrada correctamente');
+  //console.log('🔒 Conexión a la DB cerrada correctamente');
 });

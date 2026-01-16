@@ -121,6 +121,11 @@ npm run test
 ---
 
 ### Comandos
+
+### Test
+
+Ir a la carpeta backend y luego:
+
 ### test individuales ejemplo:
 ```
 npx jest tests/unit/order.service.test.ts
@@ -131,19 +136,31 @@ npx jest tests/unit/order.service.test.ts
 npx jest tests/integration/product.integration.test.ts
 ```
 
-### Para utilizar el deploy en render usar la direccion: (REHACER)
+### Sino usar para unitarios:
 ```
-https://backend-suplementos.onrender.com/api/
+npm run test:unit
+```
+
+### Sino usar para integration:
+```
+npm run test:integration
+```
+
+### Para utilizar el deploy en render usar la direccion:
+```
+https://backend-bd-tp-integrador.onrender.com/api/
 ```
 Por ejemplo en postman:
 ```
-GET https://backend-suplementos.onrender.com/api/products
+https://backend-bd-tp-integrador.onrender.com/api/products
 ```
 
-### Coleccion en postman publicada: (REHACER)
+### Coleccion en postman publicada:
+
 ```
-https://documenter.getpostman.com/view/48339002/2sB3dJxrxx
+https://documenter.getpostman.com/view/48339002/2sBXVfjrsG
 ```
+
 
 ## 📘 Entidades y Relaciones
 
@@ -297,169 +314,6 @@ https://documenter.getpostman.com/view/48339002/2sB3dJxrxx
 ---
 
 ### Consideraciones finales o limitaciones (REHACER ahora tenemos la BD en local)
-
-El backend y el frontend son prototipos, cada uno con su mock
-
----
-## 📁 Estructura del Proyecto (REHACER)
-```
-
-TrabajoFinalIntegrador/
-├── coverage/                          # Reportes de cobertura de tests
-├── dist/                              # Archivos compilados de TypeScript
-├── images/                            # Imágenes utilizadas (productos, etc.)
-├── node_modules/
-
-├── src/
-│
-│   ├── app.ts                         # Configuración principal de Express
-│   ├── index.ts                       # Punto de entrada del servidor
-│
-│   ├── controllers/                   # Controladores (MVC)
-│   │   ├── user.controller.ts
-│   │   ├── product.controller.ts
-│   │   ├── order.controller.ts
-│   │   ├── cart.controller.ts
-│   │   ├── category.controller.ts
-│   │   ├── review.controller.ts
-│   │   ├── itemCart.controller.ts
-│   │   └── orderDetail.controller.ts
-│
-│   ├── middlewares/                  # Middlewares
-│   │   ├── auth.middleware.ts
-│   │   ├── errorHandler.ts
-│   │   └── validate.ts
-│
-│   ├── models/                        # Modelos de datos y conexión
-│   │
-│   │   ├── implementations/
-│   │   │   ├── mock/                  # Implementación Mock (fase inicial)
-│   │   │   │   ├── mockUser.ts
-│   │   │   │   ├── mockProduct.ts
-│   │   │   │   ├── mockOrder.ts
-│   │   │   │   ├── mockOrderDetail.ts
-│   │   │   │   ├── mockCart.ts
-│   │   │   │   ├── mockItemCart.ts
-│   │   │   │   ├── mockCategory.ts
-│   │   │   │   └── mockReview.ts
-│   │   │   └── postgres/              # Implementación futura con ORM
-│   │   │       ├── user.model.ts
-│   │   │       ├── product.model.ts
-│   │   │       ├── order.model.ts
-│   │   │       ├── orderDetail.model.ts
-│   │   │       ├── cart.model.ts
-│   │   │       ├── itemCart.model.ts
-│   │   │       ├── category.model.ts
-│   │   │       └── review.model.ts
-│
-│   │   ├── interface/                 # Interfaces TypeScript de entidades
-│   │   │   ├── user.ts
-│   │   │   ├── product.ts
-│   │   │   ├── order.ts
-│   │   │   ├── orderDetail.ts
-│   │   │   ├── cart.ts
-│   │   │   ├── itemCart.ts
-│   │   │   ├── category.ts
-│   │   │   └── review.ts
-│
-│   │   ├── crud/                      # Interfaces CRUD de cada entidad
-│   │   │   ├── userCrud.interface.ts
-│   │   │   ├── productCrud.interface.ts
-│   │   │   ├── orderCrud.interface.ts
-│   │   │   ├── orderDetailCrud.interface.ts
-│   │   │   ├── cartCrud.interface.ts
-│   │   │   ├── itemCartCrud.interface.ts
-│   │   │   ├── categoryCrud.interface.ts
-│   │   │   └── reviewCrud.interface.ts
-│ 
-│   ├── repositories/                      # Opcional: separar lógica acceso a BD
-│   │   ├── user.repository.ts
-│   │   ├── product.repository.ts
-│   │   ├── order.repository.ts
-│   │   ├── orderDetail.repository.ts
-│		├── cart.repository.ts
-│		├── itemCart.repository.ts
-│		├── category.repository.ts
-│		└── review.repository.ts
-│
-│   ├── routes/                        # Rutas de la API
-│   │   ├── user.routes.ts
-│   │   ├── product.routes.ts
-│   │   ├── order.routes.ts
-│   │   ├── orderDetail.routes.ts
-│   │   ├── cart.routes.ts
-│   │   ├── itemCart.routes.ts
-│   │   ├── category.routes.ts
-│   │   └── review.routes.ts
-│
-│   ├── schemas/                       # Validaciones (Zod o Joi)
-│   │   ├── user.schema.ts
-│   │   ├── product.schema.ts
-│   │   ├── order.schema.ts
-│   │   ├── orderDetail.schema.ts
-│   │   ├── cart.schema.ts
-│   │   ├── itemCart.schema.ts
-│   │   ├── category.schema.ts
-│   │   └── review.schema.ts
-│
-│   ├── services/                      # Lógica de negocio (services)
-│   │   ├── user.service.ts
-│   │   ├── product.service.ts
-│   │   ├── order.service.ts
-│   │   ├── orderDetail.service.ts
-│   │   ├── cart.service.ts
-│   │   ├── itemCart.service.ts
-│   │   ├── category.service.ts
-│   │   └── review.service.ts
-│
-│   ├── tests/                         # Testing
-│   │   ├── unit/
-│   │   │   ├── user.service.test.ts
-│   │   │   ├── product.service.test.ts
-│   │   │   ├── order.service.test.ts
-│   │   │   ├── orderDetail.service.test.ts
-│   │   │   ├── cart.service.test.ts
-│   │   │   ├── itemCart.service.test.ts
-│   │   │   ├── category.service.test.ts
-│   │   │   └── review.service.test.ts
-│   │   └── integration/
-│   │       ├── user.integration.test.ts
-│   │       ├── product.integration.test.ts
-│   │       ├── order.integration.test.ts
-│   │       ├── orderDetail.integration.test.ts
-│   │       ├── cart.integration.test.ts
-│   │       ├── itemCart.integration.test.ts
-│   │       ├── category.integration.test.ts
-│   │       └── review.integration.test.ts
-│
-│   ├── utils/                         # Utilidades generales
-│   │   ├── jwt.ts
-│   │   ├── hashPassword.ts
-│   │   ├── price.calculator.ts
-│   │   ├── rating.calculator.ts
-│   │   └── idGenerator.ts
-│
-│   ├── config/                        # Configuración centralizada (opcional)
-│   │   ├── db.config.ts
-│   │   ├── jwt.config.ts
-│   │   └── index.ts
-│
-│   └── dtos/                          # (opcional) DTOs para inputs/outputs
-│       ├── user.dto.ts
-│       ├── product.dto.ts
-│       └── ...
-│
-├── .env                               # Variables de entorno
-├── .gitignore
-├── jest.config.js                     # Configuración de Jest
-├── package.json
-├── package-lock.json
-├── readme.md
-├── tsconfig.json                      # Configuración de TypeScript
-├──eslint.config					   # Configuración de Eslint
-├──.prettierrc						   # Configuración de prettier
-
-```
 
 ## 📁 Estructura del Proyecto 
 ```

@@ -1,8 +1,10 @@
-version: '3.8'
+#version: '3.8'
 
 services:
 
   # para usar Neon comentamos el contenedor local
+  # para usar los test usamos el contenedor local db y dependes on en el contenedor backend
+
   # db:
   #   image: postgres:18-alpine
   #   container_name: suplementos_db
