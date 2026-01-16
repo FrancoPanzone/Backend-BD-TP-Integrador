@@ -5,6 +5,8 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
+    "test:unit": "jest --config jest.unit.config.cjs",
+    "test:integration": "jest --config jest.integration.config.cjs --runInBand",
     "build": "tsc -p tsconfig.build.json",
     "dev": "ts-node src/index.ts",
     "start": "node ./dist/index.js",

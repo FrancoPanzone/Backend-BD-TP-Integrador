@@ -20,5 +20,5 @@ import dotenv from 'dotenv';
 // Resuelve la ruta desde el root del backend
 dotenv.config({ path: path.resolve(__dirname, '.env.test') });
 
-console.log(process.env.JWT_SECRET)
-console.log('✅ Variables de entorno cargadas para Jest');
+//console.log(process.env.JWT_SECRET)
+//console.log('✅ Variables de entorno cargadas para Jest');

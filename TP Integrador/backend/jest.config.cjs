@@ -46,7 +46,7 @@ module.exports = {
   setupFiles: ['<rootDir>/jest.setup.ts'],
 
   // Se ejecuta después de inicializar el entorno de Jest
-  setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/tests/setupIntegrationTests.ts'],
 
   transform: {
     '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],

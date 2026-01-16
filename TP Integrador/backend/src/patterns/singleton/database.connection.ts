@@ -161,7 +161,7 @@ export class DatabaseConnection {
 
       if (env.DATABASE_URL) {
         // Neon / Render
-        console.log('🔹 Intentando conectar a Neon con URL:', env.DATABASE_URL);
+        //console.log('🔹 Intentando conectar a Neon con URL:', env.DATABASE_URL);
         DatabaseConnection.instance = new Sequelize(env.DATABASE_URL, {
           dialect: 'postgres',
           logging: console.log, // muestra todas las queries y la conexión
@@ -171,12 +171,12 @@ export class DatabaseConnection {
         });
       } else {
         // Local / Docker
-        console.log('🔹 Intentando conectar a local con:', {
-          host: env.DB_HOST,
-          user: env.DB_USER,
-          db: env.DB_NAME,
-          port: env.DB_PORT,
-        });
+        // console.log('🔹 Intentando conectar a local con:', {
+        //   host: env.DB_HOST,
+        //   user: env.DB_USER,
+        //   db: env.DB_NAME,
+        //   port: env.DB_PORT,
+        // });
         DatabaseConnection.instance = new Sequelize(
           env.DB_NAME!,
           env.DB_USER!,
