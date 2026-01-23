@@ -1,0 +1,126 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Seeder} */
+module.exports = {
+  async up(queryInterface) {
+    await queryInterface.bulkInsert(
+      'Users',
+      [
+        {
+          name: 'Administrador',
+          email: 'admin@admin.com',
+          password: '$2b$10$ro0s/0TmX/GlC5FJyEswv.lducVaejVNZK5GgEnVROxjEtD.BYe3m',
+          address: 'Admin Street 123',
+          role: 'ADMIN',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Usuario Normal',
+          email: 'user1@email.com',
+          password: '$2b$10$5Fsj.IAfr4DNPejUMv3kRunQGzRChGlkw1R5gVSkTA9bGf.5vjMo.',
+          address: 'User Street 456',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Usuario Normal2',
+          email: 'user2@email.com',
+          password: '$2b$10$30IIWEEsA7Y90kSt9iNr4ex52CX.fsAp4Y5Sd0x1xoHcSvet27dQO',
+          address: 'User2 Street 456',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Usuario Normal3',
+          email: 'user3@email.com',
+          password: '$2b$10$GZpiEOeDs3a9M7bR.tfUfuYnzxAIElzjS9afwhaZ/5ucwe2/pLPS.',
+          address: 'User3 Street 456',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Mariana User',
+          email: 'mariana@email.com',
+          password: '$2b$10$L0ihRhEsdhJk.uGxYXhNOenhzZgyTDvvrV1t9H3DDseM2.3NQRLD.',
+          address: 'Av. Siempre Viva 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Pablo Paredes',
+          email: 'pablo@email.com',
+          password: '$2b$10$Ml9znIOiHniFzZv6kUge7ORP57WfeFj9r43oZh53TbW4nUd.Wr1fi',
+          address: 'Av. Sarmiento 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Eve Gonzalez',
+          email: 'eve@email.com',
+          password: '$2b$10$DZUHBANhr2a3llsnTw/0mOgtZG22w5FiqoldKT.w4qwWF3NkxUGpC',
+          address: 'Av. Colon 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Jose Rodriguez',
+          email: 'jose@email.com',
+          password: '$2b$10$fCSXaATbOA5V91ll.mD.LeTK40MKbwL.KE6MmyyZO4JiosKxJ8dKy',
+          address: 'Av. 9 de Julio 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Juan Perez',
+          email: 'juan@email.com',
+          password: '$2b$10$5Y0n5MkyBfb3.ectg.athe70uzm8o2BcwCY6QBAaI5VkInNA/vhoq',
+          address: 'Av. Libertadores 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Sofia Perez',
+          email: 'sofia@email.com',
+          password: '$2b$10$Fadb316EShazdnz9v6c7NuJIeFYFfgr3VZpehMcqc0/hrtb9/CcFK',
+          address: 'Av. Libertadores 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Guillermo Brown',
+          email: 'guille@email.com',
+          password: '$2b$10$59CGLNaDZ71gbLhraee9rugFSqUEIR8z8IRvyOaTIDe3Tn9oGX.0a',
+          address: 'Av. La Plata 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          name: 'Gabriel Garcia',
+          email: 'gabriel@email.com',
+          password: '$2b$10$lg3AmXv.c2DWYSY8/BQpEejyR.fVoU.o/YvOA9h5x3gUDiTX3bveW',
+          address: 'Av. Literatura 123',
+          role: 'USER',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ],
+      {}
+    );
+  },
+
+  async down(queryInterface) {
+    await queryInterface.bulkDelete('Users', null, {});
+  },
+};
+

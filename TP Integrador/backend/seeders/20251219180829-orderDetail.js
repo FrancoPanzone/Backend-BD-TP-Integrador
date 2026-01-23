@@ -1,0 +1,32 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Seeder} */
+module.exports = {
+  async up(queryInterface) {
+    await queryInterface.bulkInsert(
+      'OrderDetails',
+      [
+        { order_id: 1, product_id: 1, quantity: 2, unit_price: 15000, subtotal: 30000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 1, product_id: 2, quantity: 1, unit_price: 18000, subtotal: 18000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 2, product_id: 2, quantity: 3, unit_price: 18000, subtotal: 54000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 2, product_id: 1, quantity: 1, unit_price: 15000, subtotal: 15000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 3, product_id: 1, quantity: 4, unit_price: 15000, subtotal: 60000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 4, product_id: 2, quantity: 2, unit_price: 18000, subtotal: 36000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 5, product_id: 1, quantity: 1, unit_price: 15000, subtotal: 15000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 6, product_id: 2, quantity: 5, unit_price: 18000, subtotal: 90000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 7, product_id: 1, quantity: 2, unit_price: 15000, subtotal: 30000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 8, product_id: 2, quantity: 3, unit_price: 18000, subtotal: 54000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 9, product_id: 1, quantity: 1, unit_price: 15000, subtotal: 15000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 10, product_id: 2, quantity: 2, unit_price: 18000, subtotal: 36000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 11, product_id: 1, quantity: 3, unit_price: 15000, subtotal: 45000, createdAt: new Date(), updatedAt: new Date() },
+        { order_id: 12, product_id: 2, quantity: 1, unit_price: 18000, subtotal: 18000, createdAt: new Date(), updatedAt: new Date() },
+      ],
+      {}
+    );
+  },
+
+  async down(queryInterface) {
+    await queryInterface.bulkDelete('OrderDetails', null, {});
+  },
+};
+

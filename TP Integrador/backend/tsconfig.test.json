@@ -1,0 +1,9 @@
+// backend/tsconfig.test.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "."
+  },
+  //"include": ["jest.setup.ts", "src/**/*.ts"]
+  "include": ["jest.setup.ts", "src/**/*.ts", "tests/**/*.ts"]
+}
