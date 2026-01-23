@@ -6,7 +6,7 @@
 
 Se pasara las .env al mail
 
-### 2. Agregar un .env.test dentro de la carpeta backend
+### 2. Agregar un .env.test dentro de la carpeta backend (al nivel del Dockerfile)
 
 Se pasara las .env.test al mail
 
@@ -19,7 +19,7 @@ Se pasara las .env.test al mail
 3. Comentar el servicio db en el .yml
 4. Comentar el depends_on del servicio backend en el .yml
 
-#### Para usar BD PostreSQL Local
+#### Para usar BD PostreSQL Local (sirve para hacer los test)
 
 1. Comentar la DATABASE_URL en el .env de la carpeta raiz
 2. Descomentar la parte para el config DB local en el .env de la carpeta raiz
@@ -63,7 +63,6 @@ Luego, ingresar al contenedor del backend para ejecutar las migraciones y los se
 ```bash
 docker-compose exec backend sh
 
-# TODO: revisar si no se desincroniza la base de datos al hacer una orden (hacer un nuevo usuario, agregar items al carrito y hacer una orden con checkout)
 # Dentro del contenedor:
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all
@@ -88,37 +87,6 @@ select * from "nombre de la tabla";
 #para salir
 \q 
 ```
-
-### Guia de Instalación Local: (Esto creo que no entraria mas)
-
-1) Clonar repositorio
-```bash
-git clone < URL del repo >
-```
-Dentro de la carpeta del repo de backend
-
-2) Crear archivo de variables de entorno .env con lo enviado al mail
-
-3) Instalar dependencias
-```bash
-npm install
-```
-
-4) Compilar TypeScript
-```bash
-npm run build
-```
-5) Correr la app con el dist compilado
-```bash
-npm run start
-```
-
-Opcional - Ejecutar tests (en otra terminal)
-```bash
-npm run test
-```
-
----
 
 ### Comandos
 
