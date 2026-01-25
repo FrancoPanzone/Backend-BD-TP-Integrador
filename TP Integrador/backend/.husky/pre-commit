@@ -1,7 +1,0 @@
-#!/bin/sh
-
-# ir a la carpeta que contiene package.json y node_modules
-cd "$(git rev-parse --show-toplevel)/Guia Turistica/backend" || exit 1
-
-npm run lint
-npx --no-install lint-staged

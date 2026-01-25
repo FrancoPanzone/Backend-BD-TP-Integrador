@@ -47,7 +47,9 @@ describe('CategoryService - Integration Tests', () => {
 
     await CategoryService.delete(category.category_id, transaction);
 
-    const found = await CategoryService.getById(category.category_id, transaction).catch(() => null);
+    const found = await CategoryService.getById(category.category_id, transaction).catch(
+      () => null,
+    );
     expect(found).toBeNull();
   });
 });

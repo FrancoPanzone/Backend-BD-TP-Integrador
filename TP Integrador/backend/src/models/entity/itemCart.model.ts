@@ -70,7 +70,7 @@ ItemCart.init(
     sequelize,
     tableName: 'ItemCarts',
     timestamps: true,
-  }
+  },
 );
 
 // Asociaciones (si no están en index.ts)

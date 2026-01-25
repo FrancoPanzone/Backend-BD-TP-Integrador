@@ -22,7 +22,7 @@ describe('Review Integration Tests with Transactions', () => {
         password: '123456',
         address: 'Calle Test 123',
       },
-      transaction
+      transaction,
     );
     testUserId = user.user_id!;
 
@@ -31,7 +31,7 @@ describe('Review Integration Tests with Transactions', () => {
         name: 'Categoría Review Test',
         description: 'Categoría para reviews',
       },
-      transaction
+      transaction,
     );
     testCategoryId = category.category_id!;
 
@@ -45,7 +45,7 @@ describe('Review Integration Tests with Transactions', () => {
         rating: 0,
         brand: 'BrandTest',
       },
-      transaction
+      transaction,
     );
 
     testProductId = product.product_id!;
@@ -63,15 +63,12 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 5,
         comment: 'Excelente producto',
       },
-      transaction
+      transaction,
     );
 
     expect(review).toBeDefined();
 
-    const product = await ProductService.getById(
-      testProductId,
-      transaction
-    );
+    const product = await ProductService.getById(testProductId, transaction);
 
     expect(product).not.toBeNull();
     expect(Number(product!.rating)).toBe(5);
@@ -85,7 +82,7 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 5,
         comment: 'Excelente',
       },
-      transaction
+      transaction,
     );
 
     await ReviewService.create(
@@ -95,13 +92,10 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 3,
         comment: 'Regular',
       },
-      transaction
+      transaction,
     );
 
-    const product = await ProductService.getById(
-      testProductId,
-      transaction
-    );
+    const product = await ProductService.getById(testProductId, transaction);
 
     expect(product).not.toBeNull();
     expect(Number(product!.rating)).toBe(4);
@@ -115,13 +109,10 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 4,
         comment: 'Muy bueno',
       },
-      transaction
+      transaction,
     );
 
-    const reviews = await ReviewService.getByProductId(
-      testProductId,
-      transaction
-    );
+    const reviews = await ReviewService.getByProductId(testProductId, transaction);
 
     expect(reviews).toHaveLength(1);
     expect(reviews[0]).toBeDefined();
@@ -136,7 +127,7 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 5,
         comment: 'Excelente',
       },
-      transaction
+      transaction,
     );
 
     const r2 = await ReviewService.create(
@@ -146,15 +137,12 @@ describe('Review Integration Tests with Transactions', () => {
         qualification: 1,
         comment: 'Malo',
       },
-      transaction
+      transaction,
     );
 
     await ReviewService.delete(r2.review_id!, transaction);
 
-    const product = await ProductService.getById(
-      testProductId,
-      transaction
-    );
+    const product = await ProductService.getById(testProductId, transaction);
 
     expect(product).not.toBeNull();
     expect(Number(product!.rating)).toBe(5);

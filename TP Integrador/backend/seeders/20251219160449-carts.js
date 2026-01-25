@@ -19,7 +19,7 @@ module.exports = {
         { user_id: 11, createdAt: new Date(), updatedAt: new Date() },
         { user_id: 12, createdAt: new Date(), updatedAt: new Date() },
       ],
-      {}
+      {},
     );
   },
 
@@ -27,4 +27,3 @@ module.exports = {
     await queryInterface.bulkDelete('Carts', null, {});
   },
 };
-

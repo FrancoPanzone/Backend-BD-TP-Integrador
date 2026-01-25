@@ -13,8 +13,8 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Users',   // tabla referenciada
-          key: 'user_id',   // columna referenciada
+          model: 'Users', // tabla referenciada
+          key: 'user_id', // columna referenciada
         },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE', // si borras un usuario, se borran sus órdenes

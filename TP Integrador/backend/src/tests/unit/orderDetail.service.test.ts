@@ -28,10 +28,7 @@ describe('OrderDetailService - Reglas de negocio (Unit)', () => {
 
     const created = await orderDetailService.create(input);
 
-    expect(OrderDetailRepository.create).toHaveBeenCalledWith(
-      input,
-      null
-    );
+    expect(OrderDetailRepository.create).toHaveBeenCalledWith(input, null);
     expect(created.order_detail_id).toBe(1);
     expect(created.subtotal).toBe(15000);
   });
@@ -52,10 +49,7 @@ describe('OrderDetailService - Reglas de negocio (Unit)', () => {
 
     const result = await orderDetailService.getByOrderId(1);
 
-    expect(OrderDetailRepository.getByOrderId).toHaveBeenCalledWith(
-      1,
-      null
-    );
+    expect(OrderDetailRepository.getByOrderId).toHaveBeenCalledWith(1, null);
     expect(result[0]!.order_id).toBe(1);
   });
 
@@ -65,10 +59,7 @@ describe('OrderDetailService - Reglas de negocio (Unit)', () => {
 
     const result = await orderDetailService.getByProductId(2);
 
-    expect(OrderDetailRepository.getByProductId).toHaveBeenCalledWith(
-      2,
-      null
-    );
+    expect(OrderDetailRepository.getByProductId).toHaveBeenCalledWith(2, null);
     expect(result[0]!.product_id).toBe(2);
   });
 
@@ -80,11 +71,7 @@ describe('OrderDetailService - Reglas de negocio (Unit)', () => {
 
     const updated = await orderDetailService.update(1, updatedData);
 
-    expect(OrderDetailRepository.update).toHaveBeenCalledWith(
-      1,
-      updatedData,
-      null
-    );
+    expect(OrderDetailRepository.update).toHaveBeenCalledWith(1, updatedData, null);
     expect(updated!.quantity).toBe(5);
   });
 
@@ -93,10 +80,7 @@ describe('OrderDetailService - Reglas de negocio (Unit)', () => {
 
     const deleted = await orderDetailService.delete(1);
 
-    expect(OrderDetailRepository.delete).toHaveBeenCalledWith(
-      1,
-      null
-    );
+    expect(OrderDetailRepository.delete).toHaveBeenCalledWith(1, null);
     expect(deleted).toBe(true);
   });
 });

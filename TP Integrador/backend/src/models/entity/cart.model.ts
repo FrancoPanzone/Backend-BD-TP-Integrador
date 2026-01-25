@@ -42,5 +42,5 @@ Cart.init(
     sequelize,
     tableName: 'Carts',
     timestamps: true,
-  }
+  },
 );

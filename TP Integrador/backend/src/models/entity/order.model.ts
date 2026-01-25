@@ -20,7 +20,8 @@ interface OrderAttributes {
 // interface OrderCreationAttributes
 //   extends Optional<OrderAttributes, 'order_id' | 'total' | 'order_date'> {}
 
-interface OrderCreationAttributes extends Optional<OrderAttributes, 'order_id' | 'total' | 'order_date'> {
+interface OrderCreationAttributes
+  extends Optional<OrderAttributes, 'order_id' | 'total' | 'order_date'> {
   details?: {
     product_id: number;
     quantity: number;
@@ -89,5 +90,5 @@ Order.init(
     //     }
     //   },
     // },
-  }
+  },
 );

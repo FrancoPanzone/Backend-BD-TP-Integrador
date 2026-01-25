@@ -15,7 +15,10 @@ interface ReviewAttributes {
 
 interface ReviewCreationAttributes extends Optional<ReviewAttributes, 'review_id' | 'date'> {}
 
-export class Review extends Model<ReviewAttributes, ReviewCreationAttributes> implements ReviewAttributes {
+export class Review
+  extends Model<ReviewAttributes, ReviewCreationAttributes>
+  implements ReviewAttributes
+{
   public review_id!: number;
   public user_id!: number;
   public product_id!: number;
@@ -60,7 +63,7 @@ Review.init(
     sequelize,
     tableName: 'Reviews',
     timestamps: true,
-  }
+  },
 );
 
 // Relaciones opcionales para consultas con include

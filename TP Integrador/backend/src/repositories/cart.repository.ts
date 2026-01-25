@@ -82,7 +82,10 @@ export class CartRepository {
   }
 
   // Devuelve un carrito por el user_id
-  async getCartByUserId(userId: number, transaction: Transaction | null = null): Promise<Cart | null> {
+  async getCartByUserId(
+    userId: number,
+    transaction: Transaction | null = null,
+  ): Promise<Cart | null> {
     return Cart.findOne({
       where: { user_id: userId },
       include: [{ model: ItemCart, as: 'items' }],
@@ -91,7 +94,10 @@ export class CartRepository {
   }
 
   // Crea un carrito (si ya existe, devuelve el existente)
-  async getOrCreateCartForUser(userId: number, transaction: Transaction | null = null): Promise<Cart> {
+  async getOrCreateCartForUser(
+    userId: number,
+    transaction: Transaction | null = null,
+  ): Promise<Cart> {
     const existing = await this.getCartByUserId(userId, transaction);
     if (existing) return existing;
 

@@ -8,7 +8,7 @@ import { defineConfig } from 'eslint/config';
 export default defineConfig([
   // Ignorar dist, node_modules, coverage, etc.
   {
-    ignores: ['node_modules', 'dist', 'coverage', 'eslint.config.ts', 'package-lock.json', 'tsconfig.json', "package.json", 'tsconfig.test.json'],
+    ignores: ['node_modules', 'dist', 'coverage', 'eslint.config.ts', 'package-lock.json', 'tsconfig.json', "package.json", 'tsconfig.test.json', 'tsconfig.build.json'],
   },
 
   // Reglas para JS/TS en general
@@ -84,17 +84,45 @@ export default defineConfig([
   },
 
   // Tests y setup de Jest
+  // {
+  //   files: ['tests/**/*.ts'],
+  //   languageOptions: {
+  //     parser: tseslint.parser,
+  //     parserOptions: {
+  //       project: './tsconfig.test.json',
+  //       sourceType: 'module',
+  //     },
+  //     globals: { ...globals.jest }
+  //   },
+  //   plugins: { '@typescript-eslint': tseslint.plugin },
+  //   rules: {
+  //     ...tseslint.configs.recommendedTypeChecked[0].rules,
+  //     'prettier/prettier': 'error',
+
+  //     'no-unused-vars': 'off',
+  //     '@typescript-eslint/no-unused-vars': ['warn', {
+  //       argsIgnorePattern: '^_',
+  //       varsIgnorePattern: '^_',
+  //       caughtErrorsIgnorePattern: '^_',
+  //     }],
+  //   },
+  // },
+
   {
-    files: ['tests/**/*.ts'],
+    files: ['src/tests/**/*.ts', 'src/tests/**/setup*.ts'],
     languageOptions: {
       parser: tseslint.parser,
       parserOptions: {
         project: './tsconfig.test.json',
         sourceType: 'module',
       },
-      globals: { ...globals.jest }
+      globals: {
+        ...globals.jest,
+      },
     },
-    plugins: { '@typescript-eslint': tseslint.plugin },
+    plugins: {
+      '@typescript-eslint': tseslint.plugin,
+    },
     rules: {
       ...tseslint.configs.recommendedTypeChecked[0].rules,
       'prettier/prettier': 'error',
@@ -107,6 +135,7 @@ export default defineConfig([
       }],
     },
   },
+
 
   // {
   //   files: ['tests/**/*.ts', 'jest.setup.ts'],

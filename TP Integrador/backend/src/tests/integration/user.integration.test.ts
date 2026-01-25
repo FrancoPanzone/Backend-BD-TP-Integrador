@@ -43,17 +43,17 @@ describe('UserService - Integration Tests', () => {
 
   it('should throw error if email already exists', async () => {
     await userService.create(testUser, transaction);
-    await expect(userService.create(testUser, transaction))
-      .rejects
-      .toThrow('El email ya está registrado');
+    await expect(userService.create(testUser, transaction)).rejects.toThrow(
+      'El email ya está registrado',
+    );
   });
 
   // it('should update a user', async () => {
   //   const user = await userService.create(testUser, transaction);
 
-  //   const updateData: UserUpdate = { 
-  //     name: 'Updated Name', 
-  //     password: 'NewPassword123' 
+  //   const updateData: UserUpdate = {
+  //     name: 'Updated Name',
+  //     password: 'NewPassword123'
   //   };
 
   //   const updatedUser = await userService.update(user.user_id, updateData, transaction);
@@ -90,7 +90,7 @@ describe('UserService - Integration Tests', () => {
     const newPassword = 'NewPassword123'; // <-- texto plano
     const updateData: UserUpdate = {
       name: 'Updated Name',
-      password: newPassword
+      password: newPassword,
     };
 
     const updatedUser = await userService.update(user.user_id, updateData, transaction);
@@ -103,7 +103,6 @@ describe('UserService - Integration Tests', () => {
     // comparar texto plano con hash guardado
     expect(await bcrypt.compare(newPassword, freshUser!.password)).toBe(true);
   });
-
 
   it('should delete a user', async () => {
     const user = await userService.create(testUser, transaction);

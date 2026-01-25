@@ -37,17 +37,14 @@ describe('ProductService - Reglas de negocio (Unit)', () => {
 
     const created = await productService.create(input);
 
-    expect(CategoryService.getById).toHaveBeenCalledWith(
-      input.category_id,
-      undefined
-    );
+    expect(CategoryService.getById).toHaveBeenCalledWith(input.category_id, undefined);
 
     expect(ProductRepository.create).toHaveBeenCalledWith(
       {
         ...input,
         image: 'beta.jpg',
       },
-      undefined
+      undefined,
     );
 
     expect(created.product_id).toBe(1);
@@ -68,14 +65,9 @@ describe('ProductService - Reglas de negocio (Unit)', () => {
       description: 'Suplemento',
     };
 
-    await expect(productService.create(input)).rejects.toThrow(
-      'La categoría con id 999 no existe'
-    );
+    await expect(productService.create(input)).rejects.toThrow('La categoría con id 999 no existe');
 
-    expect(CategoryService.getById).toHaveBeenCalledWith(
-      999,
-      undefined
-    );
+    expect(CategoryService.getById).toHaveBeenCalledWith(999, undefined);
   });
 
   it('disminuye stock correctamente', async () => {
@@ -85,9 +77,7 @@ describe('ProductService - Reglas de negocio (Unit)', () => {
     } as Product;
 
     // Mock del método del service (no del repo)
-    jest
-      .spyOn(productService, 'getById')
-      .mockResolvedValue(fakeProduct);
+    jest.spyOn(productService, 'getById').mockResolvedValue(fakeProduct);
 
     (ProductRepository.update as jest.Mock).mockResolvedValue({
       ...fakeProduct,
@@ -96,16 +86,9 @@ describe('ProductService - Reglas de negocio (Unit)', () => {
 
     const updated = await productService.decreaseStock(1, 5);
 
-    expect(productService.getById).toHaveBeenCalledWith(
-      1,
-      undefined
-    );
+    expect(productService.getById).toHaveBeenCalledWith(1, undefined);
 
-    expect(ProductRepository.update).toHaveBeenCalledWith(
-      1,
-      { stock: 15 },
-      undefined
-    );
+    expect(ProductRepository.update).toHaveBeenCalledWith(1, { stock: 15 }, undefined);
 
     expect(updated.stock).toBe(15);
   });
@@ -116,17 +99,10 @@ describe('ProductService - Reglas de negocio (Unit)', () => {
       stock: 3,
     } as Product;
 
-    jest
-      .spyOn(productService, 'getById')
-      .mockResolvedValue(fakeProduct);
+    jest.spyOn(productService, 'getById').mockResolvedValue(fakeProduct);
 
-    await expect(
-      productService.decreaseStock(1, 5)
-    ).rejects.toThrow('Stock insuficiente');
+    await expect(productService.decreaseStock(1, 5)).rejects.toThrow('Stock insuficiente');
 
-    expect(productService.getById).toHaveBeenCalledWith(
-      1,
-      undefined
-    );
+    expect(productService.getById).toHaveBeenCalledWith(1, undefined);
   });
 });

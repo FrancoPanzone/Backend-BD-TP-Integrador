@@ -17,7 +17,7 @@ class ItemCartService {
         ...data,
         unit_price: product.price,
       },
-      transaction
+      transaction,
     );
   }
 
@@ -30,7 +30,10 @@ class ItemCartService {
     await this.itemRepo.clearByCartId(cartId, transaction);
   }
 
-  async getByItemId(itemId: number, transaction: Transaction | null = null): Promise<ItemCart | undefined> {
+  async getByItemId(
+    itemId: number,
+    transaction: Transaction | null = null,
+  ): Promise<ItemCart | undefined> {
     const item = await this.itemRepo.getByItemId(itemId, transaction);
     return item ?? undefined;
   }
@@ -39,7 +42,10 @@ class ItemCartService {
     return await this.itemRepo.getByCartId(cartId, transaction);
   }
 
-  async getByProductId(productId: number, transaction: Transaction | null = null): Promise<ItemCart[]> {
+  async getByProductId(
+    productId: number,
+    transaction: Transaction | null = null,
+  ): Promise<ItemCart[]> {
     return await this.itemRepo.getByProductId(productId, transaction);
   }
 
