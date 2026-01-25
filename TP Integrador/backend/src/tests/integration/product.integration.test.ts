@@ -18,7 +18,7 @@ describe('Product Integration Tests with Transactions', () => {
         name: 'Suplementos Test',
         description: 'Categoría para productos de prueba',
       },
-      transaction
+      transaction,
     );
     testCategoryId = category.category_id!;
   });
@@ -35,11 +35,11 @@ describe('Product Integration Tests with Transactions', () => {
         price: 1200,
         stock: 100,
         category_id: testCategoryId,
-        rating: 4.5,       // obligatorio
+        rating: 4.5, // obligatorio
         brand: 'WheyTest', // obligatorio
         image: '/images/products/test.webp',
       },
-      transaction
+      transaction,
     );
 
     expect(product).toBeDefined();
@@ -58,7 +58,7 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 4,
         brand: 'CreatinaTest',
       },
-      transaction
+      transaction,
     );
 
     const found = await ProductService.getById(product.product_id!, transaction);
@@ -78,14 +78,10 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 4,
         brand: 'BCAATest',
       },
-      transaction
+      transaction,
     );
 
-    const updated = await ProductService.update(
-      product.product_id!,
-      { stock: 40 },
-      transaction
-    );
+    const updated = await ProductService.update(product.product_id!, { stock: 40 }, transaction);
 
     expect(updated).not.toBeNull();
     expect(updated!.stock).toBe(40);
@@ -102,7 +98,7 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 3.5,
         brand: 'PreTest',
       },
-      transaction
+      transaction,
     );
 
     const deleted = await ProductService.delete(product.product_id!, transaction);
@@ -120,7 +116,7 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 4,
         brand: 'GlutaTest',
       },
-      transaction
+      transaction,
     );
 
     const updated = await ProductService.decreaseStock(product.product_id!, 20, transaction);
@@ -138,7 +134,7 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 4.2,
         brand: 'OmegaTest',
       },
-      transaction
+      transaction,
     );
 
     const updated = await ProductService.increaseStock(product.product_id!, 15, transaction);
@@ -156,11 +152,11 @@ describe('Product Integration Tests with Transactions', () => {
         rating: 4,
         brand: 'VitCTest',
       },
-      transaction
+      transaction,
     );
 
     await expect(
-      ProductService.decreaseStock(product.product_id!, 20, transaction)
+      ProductService.decreaseStock(product.product_id!, 20, transaction),
     ).rejects.toThrow('Stock insuficiente');
   });
 });

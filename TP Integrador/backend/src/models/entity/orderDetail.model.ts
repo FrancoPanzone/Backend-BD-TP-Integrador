@@ -73,5 +73,5 @@ OrderDetail.init(
         orderDetail.subtotal = parseFloat(orderDetail.unit_price.toString()) * orderDetail.quantity;
       },
     },
-  }
+  },
 );

@@ -18,18 +18,12 @@ if (process.env.DATABASE_URL) {
   });
 } else {
   // Docker / local
-  sequelize = new Sequelize(
-    env.DB_NAME!,
-    env.DB_USER!,
-    env.DB_PASSWORD!,
-    {
-      host: env.DB_HOST!,
-      port: Number(env.DB_PORT),
-      dialect: 'postgres',
-      logging: false,
-    }
-  );
+  sequelize = new Sequelize(env.DB_NAME!, env.DB_USER!, env.DB_PASSWORD!, {
+    host: env.DB_HOST!,
+    port: Number(env.DB_PORT),
+    dialect: 'postgres',
+    logging: false,
+  });
 }
 
 export { sequelize };
-

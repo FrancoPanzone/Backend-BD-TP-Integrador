@@ -22,7 +22,11 @@ class ProductService {
     return ProductRepository.create({ ...data, image }, transaction);
   }
 
-  async update(id: number, data: Partial<ProductInput>, transaction?: Transaction): Promise<Product | null> {
+  async update(
+    id: number,
+    data: Partial<ProductInput>,
+    transaction?: Transaction,
+  ): Promise<Product | null> {
     if (data.category_id) {
       const category = await CategoryService.getById(data.category_id, transaction);
       if (!category) throw new Error(`La categoría con id ${data.category_id} no existe`);
@@ -35,21 +39,37 @@ class ProductService {
     return ProductRepository.delete(id, transaction);
   }
 
-  async decreaseStock(productId: number, quantity: number, transaction?: Transaction): Promise<Product> {
+  async decreaseStock(
+    productId: number,
+    quantity: number,
+    transaction?: Transaction,
+  ): Promise<Product> {
     const product = await this.getById(productId, transaction);
     if (!product) throw new Error('Producto no encontrado');
     if (product.stock < quantity) throw new Error('Stock insuficiente');
 
-    const updated = await ProductRepository.update(productId, { stock: product.stock - quantity }, transaction);
+    const updated = await ProductRepository.update(
+      productId,
+      { stock: product.stock - quantity },
+      transaction,
+    );
     if (!updated) throw new Error('Error al actualizar el stock');
     return updated;
   }
 
-  async increaseStock(productId: number, quantity: number, transaction?: Transaction): Promise<Product> {
+  async increaseStock(
+    productId: number,
+    quantity: number,
+    transaction?: Transaction,
+  ): Promise<Product> {
     const product = await this.getById(productId, transaction);
     if (!product) throw new Error('Producto no encontrado');
 
-    const updated = await ProductRepository.update(productId, { stock: product.stock + quantity }, transaction);
+    const updated = await ProductRepository.update(
+      productId,
+      { stock: product.stock + quantity },
+      transaction,
+    );
     if (!updated) throw new Error('Error al actualizar el stock');
     return updated;
   }

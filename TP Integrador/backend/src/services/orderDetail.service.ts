@@ -28,7 +28,7 @@ class OrderDetailService {
   async update(
     id: number,
     data: Partial<OrderDetailInput>,
-    transaction?: Transaction
+    transaction?: Transaction,
   ): Promise<OrderDetail | null> {
     return OrderDetailRepository.update(id, data, transaction ?? null);
   }

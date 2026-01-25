@@ -54,7 +54,7 @@ class OrderService {
           quantity: i.quantity,
         })),
       },
-      transaction ?? null
+      transaction ?? null,
     );
 
     await ItemCartService.clearByCartId(cart.cart_id, transaction);
@@ -107,7 +107,7 @@ class OrderService {
   //   }
   // }
 
-  async updateStatus( id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
+  async updateStatus(id: number, status: OrderStatus, transaction?: Transaction): Promise<Order> {
     const order = await this.orderRepo.getById(id, transaction);
     if (!order) throw new Error('Orden no encontrada');
 

@@ -1,6 +1,6 @@
 // src/models/entity/category.model.ts
 import { DataTypes, Model, Optional } from 'sequelize';
-import { sequelize } from '../../config/database.config'
+import { sequelize } from '../../config/database.config';
 
 interface CategoryAttributes {
   category_id: number;
@@ -10,8 +10,10 @@ interface CategoryAttributes {
 
 interface CategoryCreationAttributes extends Optional<CategoryAttributes, 'category_id'> {}
 
-export class Category extends Model<CategoryAttributes, CategoryCreationAttributes>
-  implements CategoryAttributes {
+export class Category
+  extends Model<CategoryAttributes, CategoryCreationAttributes>
+  implements CategoryAttributes
+{
   public category_id!: number;
   public name!: string;
   public description!: string;
@@ -41,5 +43,5 @@ Category.init(
     sequelize,
     tableName: 'Categories',
     timestamps: true,
-  }
+  },
 );

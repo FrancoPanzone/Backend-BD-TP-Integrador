@@ -51,8 +51,8 @@ ItemCart.belongsTo(Product, {
 });
 
 // User 1:N Order
- User.hasMany(Order, { foreignKey: 'user_id', as: 'orders' });
- Order.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasMany(Order, { foreignKey: 'user_id', as: 'orders' });
+Order.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
 // Order 1:N OrderDetail
 Order.hasMany(OrderDetail, {
@@ -88,14 +88,4 @@ Review.belongsTo(Product, {
   as: 'product',
 });
 
-export {
-  sequelize,
-  Category,
-  Product,
-  Cart,
-  User,
-  ItemCart,
-  Order,
-  OrderDetail,
-  Review,
-};
+export { sequelize, Category, Product, Cart, User, ItemCart, Order, OrderDetail, Review };

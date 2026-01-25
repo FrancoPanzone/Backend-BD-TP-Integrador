@@ -20,10 +20,7 @@ describe('CartService (Unit)', () => {
 
     const result = await cartService.create({ user_id: 3 });
 
-    expect(CartRepository.create).toHaveBeenCalledWith(
-      { user_id: 3 },
-      null
-    );
+    expect(CartRepository.create).toHaveBeenCalledWith({ user_id: 3 }, null);
     expect(result).toBe(fakeCart);
   });
 
@@ -48,10 +45,7 @@ describe('CartService (Unit)', () => {
 
     const result = await cartService.getById(3);
 
-    expect(CartRepository.getById).toHaveBeenCalledWith(
-      3,
-      null
-    );
+    expect(CartRepository.getById).toHaveBeenCalledWith(3, null);
     expect(result).toBe(fakeCart);
   });
 
@@ -62,10 +56,7 @@ describe('CartService (Unit)', () => {
 
     const result = await cartService.getCartByUserId(99);
 
-    expect(CartRepository.getCartByUserId).toHaveBeenCalledWith(
-      99,
-      null
-    );
+    expect(CartRepository.getCartByUserId).toHaveBeenCalledWith(99, null);
     expect(result?.user_id).toBe(99);
   });
 
@@ -74,22 +65,14 @@ describe('CartService (Unit)', () => {
 
     await cartService.delete(1);
 
-    expect(CartRepository.delete).toHaveBeenCalledWith(
-      1,
-      null
-    );
+    expect(CartRepository.delete).toHaveBeenCalledWith(1, null);
   });
 
   it('should throw error if cart does not exist when deleting', async () => {
     (CartRepository.delete as jest.Mock).mockResolvedValue(false);
 
-    await expect(cartService.delete(999)).rejects.toThrow(
-      'El carrito con id 999 no existe'
-    );
+    await expect(cartService.delete(999)).rejects.toThrow('El carrito con id 999 no existe');
 
-    expect(CartRepository.delete).toHaveBeenCalledWith(
-      999,
-      null
-    );
+    expect(CartRepository.delete).toHaveBeenCalledWith(999, null);
   });
 });

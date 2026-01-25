@@ -31,8 +31,7 @@
 //   }
 // }
 
-
-// TODO: Singleton ajustado 
+// TODO: Singleton ajustado
 // src/patterns/singleton/database.connection.ts
 // import { Sequelize } from 'sequelize';
 // import env from '../../config/env.config';
@@ -94,7 +93,7 @@ import env from '../../config/env.config';
 export class DatabaseConnection {
   private static instance: Sequelize;
 
-  private constructor() { }
+  private constructor() {}
 
   // public static getInstance(): Sequelize {
   //   if (!DatabaseConnection.instance) {
@@ -155,7 +154,7 @@ export class DatabaseConnection {
       if (!env.DATABASE_URL && (!env.DB_NAME || !env.DB_USER || !env.DB_PASSWORD || !env.DB_HOST)) {
         throw new Error(
           '❌ No hay configuración de base de datos válida. ' +
-          'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.'
+            'Define DATABASE_URL para producción o DB_NAME, DB_USER, DB_PASSWORD y DB_HOST para local.',
         );
       }
 
@@ -177,17 +176,12 @@ export class DatabaseConnection {
         //   db: env.DB_NAME,
         //   port: env.DB_PORT,
         // });
-        DatabaseConnection.instance = new Sequelize(
-          env.DB_NAME!,
-          env.DB_USER!,
-          env.DB_PASSWORD!,
-          {
-            host: env.DB_HOST!,
-            port: Number(env.DB_PORT),
-            dialect: 'postgres',
-            logging: console.log,
-          }
-        );
+        DatabaseConnection.instance = new Sequelize(env.DB_NAME!, env.DB_USER!, env.DB_PASSWORD!, {
+          host: env.DB_HOST!,
+          port: Number(env.DB_PORT),
+          dialect: 'postgres',
+          logging: console.log,
+        });
       }
     }
 
@@ -204,5 +198,4 @@ export class DatabaseConnection {
       throw error; // así puedes ver el stack completo
     }
   }
-
 }

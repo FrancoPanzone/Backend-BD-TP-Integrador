@@ -38,17 +38,14 @@ describe('ItemCart Service - Unit Tests', () => {
 
     const created = await ItemCartService.create(sampleInput);
 
-    expect(Product.findByPk).toHaveBeenCalledWith(
-      2,
-      { transaction: null }
-    );
+    expect(Product.findByPk).toHaveBeenCalledWith(2, { transaction: null });
 
     expect(ItemCartRepository.create).toHaveBeenCalledWith(
       {
         ...sampleInput,
         unit_price: 100,
       },
-      null
+      null,
     );
 
     expect(created).toBe(sampleItem);
@@ -58,13 +55,10 @@ describe('ItemCart Service - Unit Tests', () => {
     (Product.findByPk as jest.Mock).mockResolvedValue(null);
 
     await expect(ItemCartService.create(sampleInput)).rejects.toThrow(
-      `Producto con id ${sampleInput.product_id} no existe`
+      `Producto con id ${sampleInput.product_id} no existe`,
     );
 
-    expect(Product.findByPk).toHaveBeenCalledWith(
-      sampleInput.product_id,
-      { transaction: null }
-    );
+    expect(Product.findByPk).toHaveBeenCalledWith(sampleInput.product_id, { transaction: null });
   });
 
   // GET
@@ -116,9 +110,7 @@ describe('ItemCart Service - Unit Tests', () => {
   it('should throw error if item does not exist on delete', async () => {
     (ItemCartRepository.delete as jest.Mock).mockResolvedValue(false);
 
-    await expect(ItemCartService.delete(999)).rejects.toThrow(
-      'ItemCart con id 999 no existe'
-    );
+    await expect(ItemCartService.delete(999)).rejects.toThrow('ItemCart con id 999 no existe');
 
     expect(ItemCartRepository.delete).toHaveBeenCalledWith(999, null);
   });

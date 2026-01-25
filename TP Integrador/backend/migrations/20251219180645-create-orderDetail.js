@@ -14,11 +14,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'Orders',      // tabla referenciada
-          key: 'order_id',      // columna referenciada
+          model: 'Orders', // tabla referenciada
+          key: 'order_id', // columna referenciada
         },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',    // si borras la orden, se borran sus detalles
+        onDelete: 'CASCADE', // si borras la orden, se borran sus detalles
       },
       product_id: {
         type: Sequelize.INTEGER,
@@ -28,7 +28,7 @@ module.exports = {
           key: 'product_id',
         },
         onUpdate: 'CASCADE',
-        onDelete: 'RESTRICT',   // no se puede borrar producto si tiene detalles
+        onDelete: 'RESTRICT', // no se puede borrar producto si tiene detalles
       },
       quantity: {
         type: Sequelize.INTEGER,

@@ -36,7 +36,7 @@ beforeAll(async () => {
   testAdminToken = jwt.sign(
     { user_id: adminUser.user_id, name: adminUser.name, role: adminUser.role },
     process.env.JWT_SECRET || 'mi_jwt_secret_ecommerce',
-    { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+    { expiresIn: process.env.JWT_EXPIRES_IN || '1h' },
   );
   //console.log(process.env.JWT_SECRET)
 

@@ -28,8 +28,7 @@ module.exports = {
         },
         {
           name: 'Pre-entreno',
-          description:
-            'Suplementos energizantes para mejorar el rendimiento antes de entrenar.',
+          description: 'Suplementos energizantes para mejorar el rendimiento antes de entrenar.',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -41,8 +40,7 @@ module.exports = {
         },
         {
           name: 'Quemadores de grasa',
-          description:
-            'Productos para apoyo en la pérdida de grasa y control de peso.',
+          description: 'Productos para apoyo en la pérdida de grasa y control de peso.',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -55,8 +53,7 @@ module.exports = {
         },
         {
           name: 'Snacks y barras',
-          description:
-            'Barras de proteína, galletas y snacks energéticos para consumo rápido.',
+          description: 'Barras de proteína, galletas y snacks energéticos para consumo rápido.',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -68,7 +65,7 @@ module.exports = {
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
   },
 
@@ -76,4 +73,3 @@ module.exports = {
     await queryInterface.bulkDelete('Categories', null, {});
   },
 };
-

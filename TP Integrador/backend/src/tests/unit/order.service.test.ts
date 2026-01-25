@@ -43,9 +43,9 @@ describe('OrderService Unit Tests', () => {
     it('lanza error si el usuario no existe', async () => {
       (UserService.getById as jest.Mock).mockResolvedValue(null);
 
-      await expect(
-        OrderService.create({ user_id: 999, items: [] })
-      ).rejects.toThrow('Usuario no existe');
+      await expect(OrderService.create({ user_id: 999, items: [] })).rejects.toThrow(
+        'Usuario no existe',
+      );
     });
   });
 
@@ -82,7 +82,7 @@ describe('OrderService Unit Tests', () => {
             { productId: 102, quantity: 1 },
           ],
         },
-        null
+        null,
       );
 
       expect(ItemCartService.clearByCartId).toHaveBeenCalledWith(10, undefined);
@@ -94,9 +94,7 @@ describe('OrderService Unit Tests', () => {
       (CartService.getCartByUserId as jest.Mock).mockResolvedValue({ cart_id: 10 });
       (ItemCartService.getByCartId as jest.Mock).mockResolvedValue([]);
 
-      await expect(OrderService.checkout(1)).rejects.toThrow(
-        'El carrito está vacío'
-      );
+      await expect(OrderService.checkout(1)).rejects.toThrow('El carrito está vacío');
     });
   });
 
@@ -112,11 +110,7 @@ describe('OrderService Unit Tests', () => {
       const result = await OrderService.updateStatus(1, 'paid');
 
       expect(OrderRepository.getById).toHaveBeenCalledWith(1, undefined);
-      expect(OrderRepository.updateStatus).toHaveBeenCalledWith(
-        mockOrder,
-        'paid',
-        undefined
-      );
+      expect(OrderRepository.updateStatus).toHaveBeenCalledWith(mockOrder, 'paid', undefined);
 
       expect(result).toBe(mockOrder);
     });
@@ -124,9 +118,7 @@ describe('OrderService Unit Tests', () => {
     it('lanza error si la orden no existe', async () => {
       (OrderRepository.getById as jest.Mock).mockResolvedValue(null);
 
-      await expect(
-        OrderService.updateStatus(999, 'paid')
-      ).rejects.toThrow('Orden no encontrada');
+      await expect(OrderService.updateStatus(999, 'paid')).rejects.toThrow('Orden no encontrada');
     });
   });
 
@@ -141,9 +133,7 @@ describe('OrderService Unit Tests', () => {
     it('lanza error si la orden no existe', async () => {
       (OrderRepository.delete as jest.Mock).mockResolvedValue(false);
 
-      await expect(OrderService.delete(999)).rejects.toThrow(
-        'Orden no encontrada'
-      );
+      await expect(OrderService.delete(999)).rejects.toThrow('Orden no encontrada');
     });
   });
 });

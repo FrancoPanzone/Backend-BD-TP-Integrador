@@ -1,4 +1,4 @@
-// PARA QUE NO SE DESINCRONICE USAR 
+// PARA QUE NO SE DESINCRONICE USAR
 'use strict';
 
 /** @type {import('sequelize-cli').Seeder} */
@@ -104,7 +104,7 @@ module.exports = {
           updatedAt: new Date(),
         },
       ],
-      {}
+      {},
     );
   },
 

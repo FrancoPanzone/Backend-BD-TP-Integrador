@@ -12,7 +12,10 @@ export class ItemCartRepository {
     return await ItemCart.findAll({ transaction });
   }
 
-  async getByItemId(itemId: number, transaction: Transaction | null = null): Promise<ItemCart | null> {
+  async getByItemId(
+    itemId: number,
+    transaction: Transaction | null = null,
+  ): Promise<ItemCart | null> {
     return await ItemCart.findByPk(itemId, { transaction });
   }
 
@@ -20,11 +23,17 @@ export class ItemCartRepository {
     return await ItemCart.findAll({ where: { cart_id: cartId }, transaction });
   }
 
-  async getByProductId(productId: number, transaction: Transaction | null = null): Promise<ItemCart[]> {
+  async getByProductId(
+    productId: number,
+    transaction: Transaction | null = null,
+  ): Promise<ItemCart[]> {
     return await ItemCart.findAll({ where: { product_id: productId }, transaction });
   }
 
-  async create(data: ItemCartCreateData, transaction: Transaction | null = null): Promise<ItemCart> {
+  async create(
+    data: ItemCartCreateData,
+    transaction: Transaction | null = null,
+  ): Promise<ItemCart> {
     return await ItemCart.create(data, { transaction });
   }
 
