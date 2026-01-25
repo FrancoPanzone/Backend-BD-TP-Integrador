@@ -75,7 +75,6 @@ export class UserRepository {
     return user.update(data, { transaction });
   }
 
-
   async delete(id: number, transaction: Transaction | null = null) {
     const user = await User.findByPk(id, { transaction });
     if (!user) return false;
@@ -86,4 +85,3 @@ export class UserRepository {
 }
 
 export default new UserRepository();
-

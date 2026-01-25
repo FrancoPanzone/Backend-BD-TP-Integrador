@@ -1,6 +1,6 @@
 // src/controllers/user.controller.ts
 import { Request, Response } from 'express';
-import  UserService  from '../services/user.service';
+import UserService from '../services/user.service';
 
 class UserController {
   async getAll(req: Request, res: Response) {

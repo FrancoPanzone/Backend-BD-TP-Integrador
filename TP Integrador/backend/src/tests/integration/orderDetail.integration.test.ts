@@ -47,11 +47,14 @@ describe('OrderDetail Integration Tests with Transactions', () => {
     const cart = await CartService.getOrCreateCartForUser(userId, transaction);
 
     // Agregar producto al carrito
-    await ItemCartService.create({
-      cart_id: cart.cart_id,
-      product_id: productId,
-      quantity: 3,
-    }, transaction);
+    await ItemCartService.create(
+      {
+        cart_id: cart.cart_id,
+        product_id: productId,
+        quantity: 3,
+      },
+      transaction,
+    );
 
     // Checkout → genera orden + detalles
     const order = await OrderService.checkout(userId, transaction);
@@ -99,7 +102,11 @@ describe('OrderDetail Integration Tests with Transactions', () => {
     const details = await OrderDetailService.getByOrderId(orderId, transaction);
     const detail = details[0]!;
 
-    const updated = await OrderDetailService.update(detail.order_detail_id!, { quantity: 5 }, transaction);
+    const updated = await OrderDetailService.update(
+      detail.order_detail_id!,
+      { quantity: 5 },
+      transaction,
+    );
     expect(updated!.quantity).toBe(5);
   });
 

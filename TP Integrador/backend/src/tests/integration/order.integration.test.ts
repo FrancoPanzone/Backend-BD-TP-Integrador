@@ -38,7 +38,7 @@ describe('Order Integration Tests with Transactions', () => {
         image: '/img/test.webp',
         category_id: 1,
       },
-      transaction
+      transaction,
     );
 
     productId = product.product_id!;
@@ -54,7 +54,7 @@ describe('Order Integration Tests with Transactions', () => {
         user_id: userId,
         items: [{ productId, quantity: 2 }],
       },
-      transaction
+      transaction,
     );
 
     // Asegurar que existen los detalles
@@ -75,7 +75,6 @@ describe('Order Integration Tests with Transactions', () => {
     expect(updatedProduct!.stock).toBe(8); // 10 - 2 = 8
   });
 
-
   it('should not allow creating order with insufficient stock', async () => {
     await expect(
       orderService.create(
@@ -83,8 +82,8 @@ describe('Order Integration Tests with Transactions', () => {
           user_id: userId,
           items: [{ productId, quantity: 100 }],
         },
-        transaction
-      )
+        transaction,
+      ),
     ).rejects.toThrow('Stock insuficiente');
   });
 
@@ -94,14 +93,14 @@ describe('Order Integration Tests with Transactions', () => {
         user_id: userId,
         items: [{ productId, quantity: 1 }],
       },
-      transaction
+      transaction,
     );
 
     const orders = await orderService.getByUserId(userId, transaction);
 
     expect(orders.length).toBeGreaterThanOrEqual(1);
 
-    const fetched = orders.find(o => o.order_id === order.order_id);
+    const fetched = orders.find((o) => o.order_id === order.order_id);
     expect(fetched).toBeDefined();
     expect(fetched!.details).toBeDefined();
     expect(fetched!.details!.length).toBe(1);
@@ -113,13 +112,13 @@ describe('Order Integration Tests with Transactions', () => {
         user_id: userId,
         items: [{ productId, quantity: 1 }],
       },
-      transaction
+      transaction,
     );
 
     const updated = await orderService.updateStatus(
       order.order_id,
       'paid' as OrderStatus,
-      transaction
+      transaction,
     );
 
     expect(updated).toBeDefined();
@@ -132,13 +131,13 @@ describe('Order Integration Tests with Transactions', () => {
         user_id: userId,
         items: [{ productId, quantity: 1 }],
       },
-      transaction
+      transaction,
     );
 
     await orderService.delete(order.order_id, transaction);
 
-    await expect(
-      orderService.getById(order.order_id, transaction)
-    ).rejects.toThrow('Orden no encontrada');
+    await expect(orderService.getById(order.order_id, transaction)).rejects.toThrow(
+      'Orden no encontrada',
+    );
   });
 });

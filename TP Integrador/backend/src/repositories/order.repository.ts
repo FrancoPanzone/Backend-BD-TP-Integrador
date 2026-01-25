@@ -145,15 +145,12 @@ class OrderRepository {
   // }
 
   // para usar hook de orderDetail model y la transaccion para el test de integracion
-  async create(
-    data: OrderInput,
-    transaction: Transaction | null = null
-  ): Promise<Order> {
+  async create(data: OrderInput, transaction: Transaction | null = null): Promise<Order> {
     if (!data.items || data.items.length === 0) {
       throw new Error('No se pueden crear órdenes vacías');
     }
 
-    const t = transaction ?? await Order.sequelize!.transaction();
+    const t = transaction ?? (await Order.sequelize!.transaction());
 
     try {
       // 1️⃣ Crear orden
@@ -163,7 +160,7 @@ class OrderRepository {
           status: 'pending',
           total: 0,
         },
-        { transaction: t }
+        { transaction: t },
       );
 
       let total = 0;
@@ -180,11 +177,7 @@ class OrderRepository {
           throw new Error(`Stock insuficiente para ${product.name}`);
         }
 
-        await productService.decreaseStock(
-          item.productId,
-          item.quantity,
-          t
-        );
+        await productService.decreaseStock(item.productId, item.quantity, t);
 
         const detail = await OrderDetail.create(
           {
@@ -193,7 +186,7 @@ class OrderRepository {
             quantity: item.quantity,
             unit_price: product.price,
           },
-          { transaction: t }
+          { transaction: t },
         );
 
         total += Number(detail.subtotal);
@@ -239,7 +232,11 @@ class OrderRepository {
   //   return order;
   // }
 
-  async updateStatus( order: Order, status: OrderStatus, transaction: Transaction | null= null ): Promise<Order> {
+  async updateStatus(
+    order: Order,
+    status: OrderStatus,
+    transaction: Transaction | null = null,
+  ): Promise<Order> {
     order.status = status;
     await order.save({ transaction });
     return order;
@@ -252,4 +249,3 @@ class OrderRepository {
 }
 
 export default new OrderRepository();
-

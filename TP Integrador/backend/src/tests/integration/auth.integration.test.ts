@@ -32,7 +32,11 @@ describe('AuthService - Integration Tests', () => {
     // Crear usuario real en DB con transacción
     const user = await UserService.create(testUser, transaction);
 
-    const validated = await AuthService.validateUserByName(user.name, testUser.password, transaction);
+    const validated = await AuthService.validateUserByName(
+      user.name,
+      testUser.password,
+      transaction,
+    );
 
     expect(validated).toBeDefined();
     expect(validated?.user_id).toBe(user.user_id);

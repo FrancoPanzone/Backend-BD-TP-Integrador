@@ -33,10 +33,7 @@ class UserService {
     if (existing) throw new Error('El email ya está registrado');
 
     // Pasamos la transacción al repo
-    return UserRepository.create(
-      { ...data, role: data.role ?? UserRole.USER },
-      transaction
-    );
+    return UserRepository.create({ ...data, role: data.role ?? UserRole.USER }, transaction);
   }
 
   // Actualiza un usuario

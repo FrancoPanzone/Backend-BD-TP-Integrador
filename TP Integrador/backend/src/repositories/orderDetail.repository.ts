@@ -12,25 +12,38 @@ export class OrderDetailRepository {
     return OrderDetail.findByPk(id, { transaction });
   }
 
-  async getByOrderId(orderId: number, transaction: Transaction | null = null): Promise<OrderDetail[]> {
+  async getByOrderId(
+    orderId: number,
+    transaction: Transaction | null = null,
+  ): Promise<OrderDetail[]> {
     return OrderDetail.findAll({
       where: { order_id: orderId },
       transaction,
     });
   }
 
-  async getByProductId(productId: number, transaction: Transaction | null = null): Promise<OrderDetail[]> {
+  async getByProductId(
+    productId: number,
+    transaction: Transaction | null = null,
+  ): Promise<OrderDetail[]> {
     return OrderDetail.findAll({
       where: { product_id: productId },
       transaction,
     });
   }
 
-  async create(data: OrderDetailInput, transaction: Transaction | null = null): Promise<OrderDetail> {
+  async create(
+    data: OrderDetailInput,
+    transaction: Transaction | null = null,
+  ): Promise<OrderDetail> {
     return OrderDetail.create(data, { transaction });
   }
 
-  async update(id: number, data: Partial<OrderDetailInput>, transaction: Transaction | null = null): Promise<OrderDetail | null> {
+  async update(
+    id: number,
+    data: Partial<OrderDetailInput>,
+    transaction: Transaction | null = null,
+  ): Promise<OrderDetail | null> {
     const orderDetail = await OrderDetail.findByPk(id, { transaction });
     if (!orderDetail) return null;
     return orderDetail.update(data, { transaction });
@@ -45,4 +58,3 @@ export class OrderDetailRepository {
 }
 
 export default new OrderDetailRepository();
-

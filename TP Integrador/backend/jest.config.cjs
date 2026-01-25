@@ -24,8 +24,8 @@
 //   testEnvironment: 'node',
 //   testMatch: ['**/tests/unit/**/*.test.ts', '**/tests/integration/**/*.test.ts'],
 //   modulePathIgnorePatterns: ['dist'],
-//   setupFiles: ['<rootDir>/jest.setup.ts'], 
-//   setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'], 
+//   setupFiles: ['<rootDir>/jest.setup.ts'],
+//   setupFilesAfterEnv: ['<rootDir>/src/tests/setupTests.ts'],
 //   transform: {
 //     '^.+\\.ts$': ['ts-jest', { tsconfig: 'tsconfig.test.json' }],
 //   },
@@ -36,10 +36,7 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: [
-    '**/tests/unit/**/*.test.ts',
-    '**/tests/integration/**/*.test.ts'
-  ],
+  testMatch: ['**/tests/unit/**/*.test.ts', '**/tests/integration/**/*.test.ts'],
   modulePathIgnorePatterns: ['dist'],
 
   // Se ejecuta antes de cualquier test

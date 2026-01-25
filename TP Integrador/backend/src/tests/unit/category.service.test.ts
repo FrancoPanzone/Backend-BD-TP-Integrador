@@ -29,7 +29,7 @@ describe('CategoryService (Unit)', () => {
         name: 'Proteina',
         description: 'Todos los productos de suplementación proteica',
       },
-      undefined // transaction opcional
+      undefined, // transaction opcional
     );
     expect(result).toBe(fakeCategory);
   });
@@ -46,9 +46,7 @@ describe('CategoryService (Unit)', () => {
   it('should throw error if category does not exist', async () => {
     (CategoryRepository.getById as jest.Mock).mockResolvedValue(null);
 
-    await expect(categoryService.getById(999)).rejects.toThrow(
-      'La categoría con id 999 no existe'
-    );
+    await expect(categoryService.getById(999)).rejects.toThrow('La categoría con id 999 no existe');
     expect(CategoryRepository.getById).toHaveBeenCalledWith(999, undefined);
   });
 
@@ -72,7 +70,7 @@ describe('CategoryService (Unit)', () => {
         name: 'Proteina Whey',
         description: 'Proteína de suero',
       },
-      undefined // transaction opcional
+      undefined, // transaction opcional
     );
     expect(result).toBe(updatedCategory);
   });

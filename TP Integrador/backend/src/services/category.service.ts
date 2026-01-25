@@ -20,12 +20,19 @@ export class CategoryService {
   }
 
   // Crear categoría con transacción opcional
-  async create(data: Omit<CategoryInput, 'category_id'>, transaction?: Transaction): Promise<Category> {
+  async create(
+    data: Omit<CategoryInput, 'category_id'>,
+    transaction?: Transaction,
+  ): Promise<Category> {
     return this.categoryRepo.create(data, transaction);
   }
 
   // Actualizar categoría con transacción opcional
-  async update(id: number, data: Partial<CategoryInput>, transaction?: Transaction): Promise<Category> {
+  async update(
+    id: number,
+    data: Partial<CategoryInput>,
+    transaction?: Transaction,
+  ): Promise<Category> {
     const updated = await this.categoryRepo.update(id, data, transaction);
     if (!updated) throw new Error(`La categoría con id ${id} no existe`);
     return updated;

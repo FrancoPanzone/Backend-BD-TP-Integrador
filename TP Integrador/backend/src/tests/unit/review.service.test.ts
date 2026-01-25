@@ -47,20 +47,14 @@ describe('ReviewService - Unit Tests', () => {
 
     const review = await ReviewService.create(sampleReviewInput);
 
-    expect(ProductRepository.getById).toHaveBeenCalledWith(
-      sampleReviewInput.product_id,
-      null
-    );
+    expect(ProductRepository.getById).toHaveBeenCalledWith(sampleReviewInput.product_id, null);
 
-    expect(ReviewRepository.create).toHaveBeenCalledWith(
-      sampleReviewInput,
-      null
-    );
+    expect(ReviewRepository.create).toHaveBeenCalledWith(sampleReviewInput, null);
 
     expect(ProductRepository.update).toHaveBeenCalledWith(
       sampleReviewInput.product_id,
       expect.objectContaining({ rating: 5 }),
-      null
+      null,
     );
 
     expect(review).toBe(sampleReview);
@@ -69,10 +63,8 @@ describe('ReviewService - Unit Tests', () => {
   it('should throw error if product does not exist', async () => {
     (ProductRepository.getById as jest.Mock).mockResolvedValue(null);
 
-    await expect(
-      ReviewService.create(sampleReviewInput)
-    ).rejects.toThrow(
-      `El producto con id ${sampleReviewInput.product_id} no existe`
+    await expect(ReviewService.create(sampleReviewInput)).rejects.toThrow(
+      `El producto con id ${sampleReviewInput.product_id} no existe`,
     );
   });
 
@@ -93,15 +85,9 @@ describe('ReviewService - Unit Tests', () => {
 
     const reviews = await ReviewService.getByProductId(sampleProduct.product_id);
 
-    expect(ProductRepository.getById).toHaveBeenCalledWith(
-      sampleProduct.product_id,
-      null
-    );
+    expect(ProductRepository.getById).toHaveBeenCalledWith(sampleProduct.product_id, null);
 
-    expect(ReviewRepository.getByProductId).toHaveBeenCalledWith(
-      sampleProduct.product_id,
-      null
-    );
+    expect(ReviewRepository.getByProductId).toHaveBeenCalledWith(sampleProduct.product_id, null);
 
     expect(reviews).toEqual([sampleReview]);
   });
@@ -109,9 +95,9 @@ describe('ReviewService - Unit Tests', () => {
   it('should throw error if product id does not exist', async () => {
     (ProductRepository.getById as jest.Mock).mockResolvedValue(null);
 
-    await expect(
-      ReviewService.getByProductId(999)
-    ).rejects.toThrow('El producto con id 999 no existe');
+    await expect(ReviewService.getByProductId(999)).rejects.toThrow(
+      'El producto con id 999 no existe',
+    );
   });
 
   // DELETE
@@ -128,20 +114,14 @@ describe('ReviewService - Unit Tests', () => {
 
     const result = await ReviewService.delete(sampleReview.review_id);
 
-    expect(ReviewRepository.getById).toHaveBeenCalledWith(
-      sampleReview.review_id,
-      null
-    );
+    expect(ReviewRepository.getById).toHaveBeenCalledWith(sampleReview.review_id, null);
 
-    expect(ReviewRepository.delete).toHaveBeenCalledWith(
-      sampleReview.review_id,
-      null
-    );
+    expect(ReviewRepository.delete).toHaveBeenCalledWith(sampleReview.review_id, null);
 
     expect(ProductRepository.update).toHaveBeenCalledWith(
       sampleReview.product_id,
       expect.objectContaining({ rating: 0 }),
-      null
+      null,
     );
 
     expect(result).toBe(true);
