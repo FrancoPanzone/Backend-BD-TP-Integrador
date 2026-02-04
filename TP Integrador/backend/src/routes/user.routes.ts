@@ -18,7 +18,7 @@ router.get(
   '/:id',
   authenticateJWT,
   validate(idParamSchema, 'params'),
-  authorizeSelfOrAdmin,
+  authorizeSelfOrAdmin('id'),
   UserController.getById,
 );
 
@@ -32,7 +32,7 @@ router.put(
   authenticateJWT,
   validate(idParamSchema, 'params'),
   validate(userUpdateSchema, 'body'),
-  authorizeSelfOrAdmin,
+  authorizeSelfOrAdmin('id'),
   UserController.update,
 );
 

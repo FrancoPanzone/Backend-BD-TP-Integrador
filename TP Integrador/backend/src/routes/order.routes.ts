@@ -23,7 +23,7 @@ router.get(
   '/user/:userId',
   authenticateJWT,
   validate(userIdParamSchema, 'params'),
-  authorizeSelfOrAdmin,
+  authorizeSelfOrAdmin('userId'),
   OrderController.getByUserId,
 );
 
