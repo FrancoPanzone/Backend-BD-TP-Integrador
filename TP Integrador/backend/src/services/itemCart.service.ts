@@ -5,12 +5,36 @@ import { ItemCart } from '../models/entity/itemCart.model';
 import { Product } from '../models/entity/product.model';
 import { Transaction } from 'sequelize';
 
+import { Cart } from '../models/entity/cart.model';
+
+import CartService from './cart.service';
+
 class ItemCartService {
   private itemRepo = ItemCartRepository;
 
+  // async create(data: ItemCartInput, transaction: Transaction | null = null): Promise<ItemCart> {
+  //   const product = await Product.findByPk(data.product_id, { transaction });
+  //   if (!product) throw new Error(`Producto con id ${data.product_id} no existe`);
+
+  //   return this.itemRepo.create(
+  //     {
+  //       ...data,
+  //       unit_price: product.price,
+  //     },
+  //     transaction,
+  //   );
+  // }
+
   async create(data: ItemCartInput, transaction: Transaction | null = null): Promise<ItemCart> {
+    const cart = await CartService.getById(data.cart_id, transaction || undefined);
+    if (!cart) {
+      throw new Error(`Carrito con id ${data.cart_id} no existe`);
+    }
+
     const product = await Product.findByPk(data.product_id, { transaction });
-    if (!product) throw new Error(`Producto con id ${data.product_id} no existe`);
+    if (!product) {
+      throw new Error(`Producto con id ${data.product_id} no existe`);
+    }
 
     return this.itemRepo.create(
       {
